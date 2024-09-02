@@ -1,0 +1,14 @@
+{
+	"hash": "d41d8cd98f00b204e9800998ecf8427e",
+	"updated": "2024-08-30T16:52:25.491164-04:00",
+	"installedModules": {
+		"https://github.com/fortesinformatica/fortesreport-ce": {
+			"name": "fortesreport-ce",
+			"version": "master",
+			"hash": "5502628d61b4569d8260a090a4869d44",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
+		}
+	}
+}

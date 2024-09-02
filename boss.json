@@ -1,0 +1,11 @@
+{
+	"name": "Projeto Delphi",
+	"description": "",
+	"version": "1.0.0",
+	"homepage": "",
+	"mainsrc": "./src",
+	"projects": [],
+	"dependencies": {
+		"https://github.com/fortesinformatica/fortesreport-ce": ">0.0.0"
+	}
+}
