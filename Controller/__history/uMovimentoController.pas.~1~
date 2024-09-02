@@ -1,0 +1,20 @@
+unit uMovimentoController;
+
+interface
+
+uses
+  uMovimentoModel, System.SysUtils;
+
+  type
+  TMovimentoController = class
+  private
+  public
+    procedure Pesquisar(sBanco: String);
+    procedure CarregarConta(oConta: TConta; iCodigo: String);
+    function InserirConta(oConta: TConta; sErro: String): Boolean;
+    function ExcluirConta(iCodigo: Integer; sErro: String): Boolean;
+    function AlterarConta(oConta: TConta; sErro: String): Boolean;
+  end;
+implementation
+
+end.

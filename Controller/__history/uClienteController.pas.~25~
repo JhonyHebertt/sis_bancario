@@ -1,0 +1,102 @@
+unit uClienteController;
+
+interface
+
+uses
+uClienteModel, System.SysUtils, DmConexao,
+Data.DB, Data.SqlExpr, FireDAC.Phys.PGDef,
+FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Phys.PG, FireDAC.Stan.Option,
+FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
+FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.VCLUI.Wait, FireDAC.Comp.Client,
+FireDAC.Phys.SQLite,
+FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
+FireDAC.Phys.SQLiteWrapper.Stat, Data.DbxSqlite, FireDAC.Stan.Param,
+FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
+Datasnap.DBClient, Datasnap.Provider;
+
+type
+  TClienteController = class
+  private
+   ConexaoSQL: TFDConnection;
+  public
+    procedure Pesquisar(sNome: String);
+    procedure CarregarCliente(oCliente: TCliente; iCodigo: String);
+    function InserirCliente(oCliente: TCliente; sErro: String): Boolean;
+    function ExcluirCliente(iCodigo: Integer; sErro: String): Boolean;
+    function AlterarCliente(oCliente: TCliente; sErro: String): Boolean;
+  end;
+
+implementation
+
+procedure TClienteController.CarregarCliente(oCliente: TCliente; iCodigo: String);
+var
+  oClientes : TCliente;
+begin
+   oClientes := TCliente.Create;
+
+   try
+     oClientes.CarregarCliente(oCliente, iCodigo );
+   finally
+     FreeAndNil(oClientes);
+   end;
+
+end;
+
+function TClienteController.InserirCliente(oCliente: TCliente;sErro: String): Boolean;
+var
+  oClientes : TCliente;
+begin
+   oClientes := TCliente.Create;
+
+   try
+     Result := oclientes.InserirCliente(oCliente, sErro);
+   finally
+     FreeAndNil(oClientes);
+   end;
+
+end;
+
+
+procedure TClienteController.Pesquisar(sNome: String);
+var
+  oClientes : TCliente;
+begin
+   oClientes := TCliente.Create;
+
+   try
+     oclientes.Pesquisar(snome);
+   finally
+     FreeAndNil(oClientes);
+   end;
+
+end;
+
+function TClienteController.ExcluirCliente(iCodigo: Integer;sErro: String): Boolean;
+var
+  oClientes : TCliente;
+begin
+   oClientes := TCliente.Create;
+
+   try
+     Result :=  oclientes.ExcluirCliente(iCodigo, sErro);
+   finally
+     FreeAndNil(oClientes);
+   end;
+
+end;
+
+function TClienteController.AlterarCliente(oCliente: TCliente;sErro: String): Boolean;
+var
+  oClientes : TCliente;
+begin
+   oClientes := TCliente.Create;
+
+   try
+     result:= oClientes.AlterarCliente(oCliente, sErro );
+   finally
+     FreeAndNil(oClientes);
+   end;
+
+end;
+end.
+

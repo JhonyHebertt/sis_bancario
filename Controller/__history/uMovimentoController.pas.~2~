@@ -1,0 +1,20 @@
+unit uMovimentoController;
+
+interface
+
+uses
+  uMovimentoModel, System.SysUtils;
+
+  type
+  TMovimentoController = class
+  private
+  public
+    procedure Pesquisar(sCliente: String);
+    procedure CarregarMovimento(oMovimento: TMovimento; iCodigo: String);
+    function InserirMovimento(oMovimento: TMovimento; sErro: String): Boolean;
+    function ExcluirMovimento(iCodigo: Integer; sErro: String): Boolean;
+    function AlterarMovimento(oMovimento: TMovimento; sErro: String): Boolean;
+  end;
+implementation
+
+end.
