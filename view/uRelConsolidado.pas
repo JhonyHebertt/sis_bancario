@@ -13,30 +13,33 @@ type
     RLBand1: TRLBand;
     RLLabel1: TRLLabel;
     RLSystemInfo2: TRLSystemInfo;
+    RLImage1: TRLImage;
     RLBand2: TRLBand;
     RLLabel2: TRLLabel;
     RLLabel4: TRLLabel;
     RLLabel5: TRLLabel;
     RLLabel6: TRLLabel;
+    RLLabel3: TRLLabel;
+    RLLabel7: TRLLabel;
+    RLLabel8: TRLLabel;
     RLBand3: TRLBand;
     RLDBText1: TRLDBText;
     RLDBText3: TRLDBText;
     RLDBText4: TRLDBText;
     sld_ant: TRLDBText;
+    RLDBText2: TRLDBText;
+    RLDBText6: TRLDBText;
+    RLDBText7: TRLDBText;
     RLBand4: TRLBand;
     RLSystemInfo3: TRLSystemInfo;
     RLSystemInfo4: TRLSystemInfo;
-    RLLabel3: TRLLabel;
-    RLDBText2: TRLDBText;
-    RLLabel7: TRLLabel;
-    RLDBText6: TRLDBText;
-    RLLabel8: TRLLabel;
-    RLDBText7: TRLDBText;
-    RLImage1: TRLImage;
     RLBand5: TRLBand;
-    RLDBResult1: TRLDBResult;
+    RLDBSLD_ANT: TRLDBResult;
     RLDBResult2: TRLDBResult;
     RLDBResult3: TRLDBResult;
+    RLGroup1: TRLGroup;
+    RLDBResult1: TRLDBResult;
+    RLLabel9: TRLLabel;
   private
     { Private declarations }
   public

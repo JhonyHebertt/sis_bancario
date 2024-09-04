@@ -23,7 +23,7 @@ object fListConta: TfListConta
     object btnSelecionar: TBitBtn
       Left = 21
       Top = 6
-      Width = 75
+      Width = 89
       Height = 25
       Caption = '&Selecionar'
       Glyph.Data = {

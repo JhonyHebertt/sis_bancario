@@ -19,13 +19,13 @@ object fCadMovimento: TfCadMovimento
     Height = 37
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 120
-    ExplicitWidth = 624
+    ExplicitTop = 112
+    ExplicitWidth = 622
     DesignSize = (
       628
       37)
     object btnSalvar: TBitBtn
-      Left = 293
+      Left = 287
       Top = 4
       Width = 75
       Height = 25
@@ -60,10 +60,10 @@ object fCadMovimento: TfCadMovimento
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       TabOrder = 0
       OnClick = btnSalvarClick
-      ExplicitLeft = 289
+      ExplicitLeft = 281
     end
     object btnSair: TBitBtn
-      Left = 389
+      Left = 383
       Top = 4
       Width = 75
       Height = 25
@@ -98,7 +98,7 @@ object fCadMovimento: TfCadMovimento
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       TabOrder = 1
       OnClick = btnSairClick
-      ExplicitLeft = 385
+      ExplicitLeft = 377
     end
   end
   object Panel1: TPanel
@@ -108,8 +108,8 @@ object fCadMovimento: TfCadMovimento
     Height = 121
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 624
-    ExplicitHeight = 120
+    ExplicitWidth = 622
+    ExplicitHeight = 112
     object Label1: TLabel
       Left = 443
       Top = 16
@@ -129,7 +129,7 @@ object fCadMovimento: TfCadMovimento
       Top = 93
       Width = 16
       Height = 23
-      TabOrder = 4
+      TabOrder = 6
       Visible = False
     end
     object EdtConta: TLabeledEdit
@@ -150,7 +150,7 @@ object fCadMovimento: TfCadMovimento
       Top = 92
       Width = 16
       Height = 23
-      TabOrder = 5
+      TabOrder = 7
       Visible = False
     end
     object dbTPMov: TDBRadioGroup
@@ -165,7 +165,7 @@ object fCadMovimento: TfCadMovimento
       Items.Strings = (
         'Saque'
         'Dep'#243'sito')
-      TabOrder = 2
+      TabOrder = 3
       Values.Strings = (
         'D'
         'C')
@@ -177,7 +177,7 @@ object fCadMovimento: TfCadMovimento
       Height = 21
       Date = 45534.000000000000000000
       Time = 0.581408553240180500
-      TabOrder = 3
+      TabOrder = 4
     end
     object BtnPesqClient: TButton
       Left = 64
@@ -199,7 +199,7 @@ object fCadMovimento: TfCadMovimento
       EditLabel.Height = 15
       EditLabel.Caption = 'Cliente'
       Enabled = False
-      TabOrder = 6
+      TabOrder = 2
       Text = ''
     end
     object edtValor: TEdit
@@ -207,7 +207,7 @@ object fCadMovimento: TfCadMovimento
       Top = 35
       Width = 78
       Height = 23
-      TabOrder = 7
+      TabOrder = 5
       Text = 'edtValor'
       OnKeyPress = edtValorKeyPress
     end

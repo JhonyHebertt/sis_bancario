@@ -6,6 +6,9 @@ object dmGeral: TdmGeral
   PixelsPerInch = 120
   object FDConnection: TFDConnection
     Params.Strings = (
+      
+        'Database=C:\Users\heber\Desktop\Projeto Delphi\DB\sis_bancario.d' +
+        'b'
       'DriverID=SQLite')
     Left = 280
     Top = 33
@@ -284,24 +287,24 @@ object dmGeral: TdmGeral
       'SELECT ci.nome as nome_cliente, '
       'co.nome_banco, '
       'co.conta, '
-      'sum(COALESCE(sld_ant.saldo,0)) as saldo_anterior, '
+      'sum(COALESCE(sld_ant.saldo,0.00)) as saldo_anterior, '
       
-        'sum(case when mv.tp_mov = '#39'D'#39' then COALESCE(mv.valor,0) else 0 e' +
-        'nd) as debitos, '
+        'sum(case when mv.tp_mov = '#39'D'#39' then COALESCE(mv.valor,0.00) else ' +
+        '0.00 end) as debitos, '
       
-        'sum(case when mv.tp_mov = '#39'C'#39' then COALESCE(mv.valor,0) else 0 e' +
-        'nd) as creditos,'
+        'sum(case when mv.tp_mov = '#39'C'#39' then COALESCE(mv.valor,0.00) else ' +
+        '0.00 end) as creditos,'
       
-        'sum(COALESCE(sld_ant.saldo,0) - (case when mv.tp_mov = '#39'D'#39' then ' +
-        '(mv.valor) else 0 end) + (case when mv.tp_mov = '#39'C'#39' then (mv.val' +
-        'or) else 0 end)) as saldo_final'
-      'FROM movimento as mv '
+        'sum(COALESCE(sld_ant.saldo,0.00) - (case when mv.tp_mov = '#39'D'#39' th' +
+        'en (mv.valor) else 0 end) + (case when mv.tp_mov = '#39'C'#39' then (mv.' +
+        'valor) else 0.00 end)) as saldo_final'
+      'FROM movimento as mv'
       'left join conta as co on co.id_conta = mv.id_conta '
       'left join cliente as ci on ci.id_cliente = co.id_cliente'
       
         'left join (select sum(case when mmv.tp_mov = '#39'C'#39' then (mmv.valor' +
-        ') else 0 end) - sum(case when mmv.tp_mov = '#39'D'#39' then (mmv.valor) ' +
-        'else 0 end) as saldo, mmv.id_conta '
+        ') else 0.00 end) - sum(case when mmv.tp_mov = '#39'D'#39' then (mmv.valo' +
+        'r) else 0.00 end) as saldo, mmv.id_conta '
       
         '             from movimento as mmv where mmv.data  < :data group' +
         ' by mmv.id_conta) as sld_ant on sld_ant.id_conta = mv.id_conta'
@@ -309,27 +312,28 @@ object dmGeral: TdmGeral
       'and ci.nome like :cliente'
       'and co.nome_banco like :banco'
       'and mv.data  >=  :data'
-      'group by ci.nome, co.nome_banco, co.conta')
+      'group by ci.nome, co.nome_banco, co.conta'
+      '')
     Left = 768
     Top = 230
     ParamData = <
       item
         Name = 'DATA'
-        DataType = ftString
-        FDDataType = dtSingle
+        DataType = ftDate
+        FDDataType = dtDate
         ParamType = ptInput
         Value = Null
       end
       item
         Name = 'CLIENTE'
         DataType = ftString
-        FDDataType = dtSingle
+        FDDataType = dtAnsiString
         ParamType = ptInput
       end
       item
         Name = 'BANCO'
         DataType = ftString
-        FDDataType = dtSingle
+        FDDataType = dtAnsiString
         ParamType = ptInput
       end>
   end
@@ -342,10 +346,10 @@ object dmGeral: TdmGeral
     Connection = FDConnection
     SQL.Strings = (
       'SELECT mv.*, co.conta, ci.nome as nome_cliente, '
-      '       (COALESCE(sld_ant.saldo,0)) as sld_anterior,'
+      '       COALESCE(sld_ant.saldo,0.00) as sld_anterior,'
       
-        '       (COALESCE(sld_ant.saldo,0))+(COALESCE(sld_atual.saldo,0))' +
-        ' as sld_atual  '
+        '       (COALESCE(sld_ant.saldo,0.00))+(COALESCE(sld_atual.saldo,' +
+        '0.00)) as sld_atual  '
       'FROM movimento as mv '
       'left join conta as co on co.id_conta = mv.id_conta '
       'left join cliente as ci on ci.id_cliente = co.id_cliente'
@@ -374,6 +378,7 @@ object dmGeral: TdmGeral
         DataType = ftDate
         FDDataType = dtDate
         ParamType = ptInput
+        Value = Null
       end
       item
         Name = 'CONTA'
@@ -381,6 +386,59 @@ object dmGeral: TdmGeral
         FDDataType = dtWideString
         ParamType = ptInput
       end>
+    object qRelAnaliticoid_movimento: TFDAutoIncField
+      FieldName = 'id_movimento'
+      Origin = 'id_movimento'
+      ProviderFlags = [pfInWhere, pfInKey]
+      ReadOnly = True
+      Visible = False
+    end
+    object qRelAnaliticoid_conta: TIntegerField
+      FieldName = 'id_conta'
+      Origin = 'id_conta'
+      Required = True
+      Visible = False
+    end
+    object qRelAnaliticoconta: TWideStringField
+      AutoGenerateValue = arDefault
+      FieldName = 'conta'
+      Origin = 'conta'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 10
+    end
+    object qRelAnaliticonome_cliente: TStringField
+      AutoGenerateValue = arDefault
+      DisplayLabel = 'Cliente'
+      FieldName = 'nome_cliente'
+      Origin = 'nome'
+      ProviderFlags = []
+      ReadOnly = True
+      Size = 50
+    end
+    object qRelAnaliticotp_mov: TWideStringField
+      FieldName = 'tp_mov'
+      Origin = 'tp_mov'
+      Required = True
+      Size = 1
+    end
+    object qRelAnaliticodata: TDateField
+      FieldName = 'data'
+      Origin = 'data'
+      Required = True
+    end
+    object qRelAnaliticovalor: TFloatField
+      FieldName = 'valor'
+      OnGetText = qRelAnaliticovalorGetText
+    end
+    object qRelAnaliticosld_anterior: TFloatField
+      FieldName = 'sld_anterior'
+      OnGetText = qRelAnaliticosld_anteriorGetText
+    end
+    object qRelAnaliticosld_atual: TFloatField
+      FieldName = 'sld_atual'
+      OnGetText = qRelAnaliticosld_atualGetText
+    end
   end
   object dsRelAnalitico: TDataSource
     DataSet = qRelAnalitico

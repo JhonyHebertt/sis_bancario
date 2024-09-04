@@ -92,7 +92,7 @@ object fConsAnalitico: TfConsAnalitico
       Top = 46
       Width = 25
       Height = 23
-      TabOrder = 3
+      TabOrder = 4
       Visible = False
     end
     object edtData: TMaskEdit
@@ -102,7 +102,7 @@ object fConsAnalitico: TfConsAnalitico
       Height = 23
       EditMask = '!99/99/0000;0;_'
       MaxLength = 10
-      TabOrder = 4
+      TabOrder = 3
       Text = ''
     end
   end

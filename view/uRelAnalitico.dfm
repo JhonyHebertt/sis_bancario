@@ -280,6 +280,7 @@ object fRelAnalitico: TfRelAnalitico
         AutoSize = False
         DataField = 'sld_anterior'
         DataSource = dmGeral.dsRelAnalitico
+        DisplayMask = '#,##0.00'
         Text = ''
       end
     end
@@ -328,9 +329,10 @@ object fRelAnalitico: TfRelAnalitico
       object RLLabel8: TRLLabel
         Left = 330
         Top = 0
-        Width = 31
+        Width = 100
         Height = 16
         Align = faTopOnly
+        Alignment = taCenter
         Caption = 'Data'
         Transparent = False
       end
@@ -366,6 +368,7 @@ object fRelAnalitico: TfRelAnalitico
         AutoSize = False
         DataField = 'valor'
         DataSource = dmGeral.dsRelAnalitico
+        DisplayMask = '#,##0.00'
         Text = ''
       end
       object RLDBText6: TRLDBText
@@ -438,13 +441,14 @@ object fRelAnalitico: TfRelAnalitico
         Transparent = False
       end
       object RLDBResult1: TRLDBResult
-        Left = 610
+        Left = 606
         Top = 24
-        Width = 100
+        Width = 108
         Height = 16
         Alignment = taCenter
         DataField = 'sld_atual'
         DataSource = dmGeral.dsRelAnalitico
+        DisplayMask = '#,##0.00'
         Text = ''
       end
     end

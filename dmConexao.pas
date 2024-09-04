@@ -56,8 +56,23 @@ type
     dsRelConsolidado: TDataSource;
     qRelAnalitico: TFDQuery;
     dsRelAnalitico: TDataSource;
+    qRelAnaliticovalor: TFloatField;
+    qRelAnaliticoid_movimento: TFDAutoIncField;
+    qRelAnaliticoid_conta: TIntegerField;
+    qRelAnaliticoconta: TWideStringField;
+    qRelAnaliticonome_cliente: TStringField;
+    qRelAnaliticotp_mov: TWideStringField;
+    qRelAnaliticodata: TDateField;
+    qRelAnaliticosld_anterior: TFloatField;
+    qRelAnaliticosld_atual: TFloatField;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
+    procedure qRelAnaliticovalorGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure qRelAnaliticosld_anteriorGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
+    procedure qRelAnaliticosld_atualGetText(Sender: TField; var Text: string;
+      DisplayText: Boolean);
   private
     { Private declarations }
   public
@@ -83,6 +98,24 @@ end;
 procedure TdmGeral.DataModuleDestroy(Sender: TObject);
 begin
   dmconexao.dmGeral.FDConnection.Connected:=False;
+end;
+
+procedure TdmGeral.qRelAnaliticosld_anteriorGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  Text := FormatFloat('#,##0.00', Sender.AsFloat);
+end;
+
+procedure TdmGeral.qRelAnaliticosld_atualGetText(Sender: TField;
+  var Text: string; DisplayText: Boolean);
+begin
+  Text := FormatFloat('#,##0.00', Sender.AsFloat);
+end;
+
+procedure TdmGeral.qRelAnaliticovalorGetText(Sender: TField; var Text: string;
+  DisplayText: Boolean);
+begin
+  Text := FormatFloat('#,##0.00', Sender.AsFloat);
 end;
 
 end.

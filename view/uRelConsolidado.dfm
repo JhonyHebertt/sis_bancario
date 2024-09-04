@@ -12,7 +12,7 @@ object fRelConsolidado: TfRelConsolidado
   TextHeight = 15
   object RLReport1: TRLReport
     Left = 0
-    Top = 4
+    Top = 5
     Width = 1403
     Height = 992
     DataSource = dmGeral.dsRelConsolidado
@@ -288,6 +288,7 @@ object fRelConsolidado: TfRelConsolidado
         Width = 100
         Height = 16
         Align = faTopOnly
+        Alignment = taCenter
         Caption = 'Saldo Anterior'
         Transparent = False
       end
@@ -297,6 +298,7 @@ object fRelConsolidado: TfRelConsolidado
         Width = 100
         Height = 16
         Align = faTopOnly
+        Alignment = taCenter
         Caption = 'D'#233'bitos'
         Transparent = False
       end
@@ -306,119 +308,24 @@ object fRelConsolidado: TfRelConsolidado
         Width = 100
         Height = 16
         Align = faTopOnly
+        Alignment = taCenter
         Caption = 'Cr'#233'ditos'
         Transparent = False
       end
       object RLLabel8: TRLLabel
         Left = 790
         Top = 0
-        Width = 75
+        Width = 100
         Height = 16
         Align = faTopOnly
+        Alignment = taCenter
         Caption = 'Saldo Final'
         Transparent = False
       end
     end
-    object RLBand3: TRLBand
-      Left = 47
-      Top = 180
-      Width = 1309
-      Height = 18
-      Borders.Sides = sdCustom
-      Borders.DrawLeft = False
-      Borders.DrawTop = False
-      Borders.DrawRight = True
-      Borders.DrawBottom = True
-      object RLDBText1: TRLDBText
-        Left = 0
-        Top = 0
-        Width = 194
-        Height = 16
-        Align = faTopOnly
-        AutoSize = False
-        Borders.Sides = sdCustom
-        Borders.DrawLeft = True
-        Borders.DrawTop = False
-        Borders.DrawRight = False
-        Borders.DrawBottom = False
-        DataField = 'nome_cliente'
-        DataSource = dmGeral.dsRelConsolidado
-        Text = ''
-      end
-      object RLDBText3: TRLDBText
-        Left = 200
-        Top = 0
-        Width = 177
-        Height = 16
-        Align = faTopOnly
-        AutoSize = False
-        DataField = 'nome_banco'
-        DataSource = dmGeral.dsRelConsolidado
-        Text = ''
-      end
-      object RLDBText4: TRLDBText
-        Left = 387
-        Top = 0
-        Width = 70
-        Height = 16
-        Align = faTopOnly
-        AutoSize = False
-        DataField = 'conta'
-        DataSource = dmGeral.dsRelConsolidado
-        Text = ''
-      end
-      object sld_ant: TRLDBText
-        Left = 466
-        Top = 0
-        Width = 100
-        Height = 16
-        Align = faTopOnly
-        Alignment = taCenter
-        AutoSize = False
-        DataField = 'saldo_anterior'
-        DataSource = dmGeral.dsRelConsolidado
-        Text = ''
-      end
-      object RLDBText2: TRLDBText
-        Left = 570
-        Top = 0
-        Width = 100
-        Height = 16
-        Align = faTopOnly
-        Alignment = taCenter
-        AutoSize = False
-        DataField = 'debitos'
-        DataSource = dmGeral.dsRelConsolidado
-        Text = ''
-      end
-      object RLDBText6: TRLDBText
-        Left = 680
-        Top = 0
-        Width = 100
-        Height = 16
-        Align = faTopOnly
-        Alignment = taCenter
-        AutoSize = False
-        DataField = 'creditos'
-        DataSource = dmGeral.dsRelConsolidado
-        Text = ''
-      end
-      object RLDBText7: TRLDBText
-        Left = 790
-        Top = 0
-        Width = 100
-        Height = 16
-        Align = faTopOnly
-        Alignment = taCenter
-        AutoSize = False
-        DataField = 'saldo_final'
-        DataSource = dmGeral.dsRelConsolidado
-        Text = ''
-      end
-    end
     object RLBand4: TRLBand
       Left = 47
-      Top = 241
+      Top = 289
       Width = 1309
       Height = 23
       BandType = btFooter
@@ -440,45 +347,206 @@ object fRelConsolidado: TfRelConsolidado
         Text = 'Hora:'
       end
     end
-    object RLBand5: TRLBand
+    object RLGroup1: TRLGroup
       Left = 47
-      Top = 198
+      Top = 180
       Width = 1309
-      Height = 43
-      BandType = btSummary
-      Visible = False
-      object RLDBResult1: TRLDBResult
-        Left = 466
-        Top = 20
-        Width = 100
-        Height = 16
-        Alignment = taCenter
-        DataField = 'saldo_anterior'
-        DataSource = dmGeral.dsRelConsolidado
-        Info = riSum
-        Text = ''
+      Height = 109
+      DataFields = 'nome_cliente'
+      object RLBand3: TRLBand
+        Left = 0
+        Top = 0
+        Width = 1309
+        Height = 17
+        Borders.Sides = sdCustom
+        Borders.DrawLeft = False
+        Borders.DrawTop = True
+        Borders.DrawRight = True
+        Borders.DrawBottom = True
+        object RLDBText1: TRLDBText
+          Left = 0
+          Top = 1
+          Width = 194
+          Height = 16
+          Align = faTopOnly
+          AutoSize = False
+          Borders.Sides = sdCustom
+          Borders.DrawLeft = True
+          Borders.DrawTop = False
+          Borders.DrawRight = False
+          Borders.DrawBottom = False
+          DataField = 'nome_cliente'
+          DataSource = dmGeral.dsRelConsolidado
+          Text = ''
+        end
+        object RLDBText3: TRLDBText
+          Left = 200
+          Top = 1
+          Width = 177
+          Height = 16
+          Align = faTopOnly
+          AutoSize = False
+          DataField = 'nome_banco'
+          DataSource = dmGeral.dsRelConsolidado
+          Text = ''
+        end
+        object RLDBText4: TRLDBText
+          Left = 387
+          Top = 1
+          Width = 100
+          Height = 16
+          Align = faTopOnly
+          AutoSize = False
+          DataField = 'conta'
+          DataSource = dmGeral.dsRelConsolidado
+          Text = ''
+        end
+        object sld_ant: TRLDBText
+          Left = 466
+          Top = 1
+          Width = 100
+          Height = 16
+          Align = faTopOnly
+          Alignment = taCenter
+          AutoSize = False
+          DataField = 'saldo_anterior'
+          DataSource = dmGeral.dsRelConsolidado
+          DisplayMask = '#,##0.00'
+          Text = ''
+        end
+        object RLDBText2: TRLDBText
+          Left = 570
+          Top = 1
+          Width = 100
+          Height = 16
+          Align = faTopOnly
+          Alignment = taCenter
+          AutoSize = False
+          DataField = 'debitos'
+          DataSource = dmGeral.dsRelConsolidado
+          DisplayMask = '#,##0.00'
+          Text = ''
+        end
+        object RLDBText6: TRLDBText
+          Left = 680
+          Top = 1
+          Width = 100
+          Height = 16
+          Align = faTopOnly
+          Alignment = taCenter
+          AutoSize = False
+          DataField = 'creditos'
+          DataSource = dmGeral.dsRelConsolidado
+          DisplayMask = '#,##0.00'
+          Text = ''
+        end
+        object RLDBText7: TRLDBText
+          Left = 790
+          Top = 1
+          Width = 100
+          Height = 16
+          Align = faTopOnly
+          Alignment = taCenter
+          AutoSize = False
+          DataField = 'saldo_final'
+          DataSource = dmGeral.dsRelConsolidado
+          DisplayMask = '#,##0.00'
+          Text = ''
+        end
       end
-      object RLDBResult2: TRLDBResult
-        Left = 572
-        Top = 20
-        Width = 86
-        Height = 16
-        Alignment = taCenter
-        DataField = 'debitos'
-        DataSource = dmGeral.dsRelConsolidado
-        Info = riSum
-        Text = ''
-      end
-      object RLDBResult3: TRLDBResult
-        Left = 685
-        Top = 20
-        Width = 90
-        Height = 16
-        Alignment = taCenter
-        DataField = 'creditos'
-        DataSource = dmGeral.dsRelConsolidado
-        Info = riSum
-        Text = ''
+      object RLBand5: TRLBand
+        Left = 0
+        Top = 17
+        Width = 1309
+        Height = 43
+        BandType = btSummary
+        object RLDBSLD_ANT: TRLDBResult
+          Left = 422
+          Top = 12
+          Width = 136
+          Height = 16
+          Alignment = taCenter
+          DataField = 'saldo_anterior'
+          DataSource = dmGeral.dsRelConsolidado
+          DisplayMask = '#,##0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Info = riSum
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBResult2: TRLDBResult
+          Left = 570
+          Top = 12
+          Width = 92
+          Height = 16
+          Alignment = taCenter
+          DataField = 'debitos'
+          DataSource = dmGeral.dsRelConsolidado
+          DisplayMask = '#,##0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Info = riSum
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBResult3: TRLDBResult
+          Left = 682
+          Top = 12
+          Width = 100
+          Height = 16
+          Alignment = taCenter
+          DataField = 'creditos'
+          DataSource = dmGeral.dsRelConsolidado
+          DisplayMask = '#,##0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Info = riSum
+          ParentFont = False
+          Text = ''
+        end
+        object RLDBResult1: TRLDBResult
+          Left = 783
+          Top = 12
+          Width = 100
+          Height = 16
+          Alignment = taCenter
+          DataField = 'saldo_final'
+          DataSource = dmGeral.dsRelConsolidado
+          DisplayMask = '#,##0.00'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold]
+          Info = riSum
+          ParentFont = False
+          Text = ''
+        end
+        object RLLabel9: TRLLabel
+          Left = 293
+          Top = 11
+          Width = 106
+          Height = 16
+          Alignment = taCenter
+          Caption = 'TOTAL CLIENTE'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clBlack
+          Font.Height = -13
+          Font.Name = 'Arial'
+          Font.Style = [fsBold, fsUnderline]
+          ParentFont = False
+          Transparent = False
+        end
       end
     end
   end
