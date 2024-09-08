@@ -7,9 +7,12 @@ Este é um sistema de gestão desenvolvido em Delphi utilizando a arquitetura MV
 O sistema possui as seguintes funcionalidades:
 - **Cadastros**
   - Clientes: Nome, Data de nascimento, Documento, Telefone e E-mail
+  -   Regra de negócio: Não pode excluir um cliente já vinculado à uma conta 
   - Contas: Cliente, Banco e Número da conta
+  -    Regra de negócio: Não pode excluir uma conta já vinculada à uma movimentação. Porém poderá inativar a conta para lançamentos futuros.
 - **Lançamentos**
   - Movimento: Conta, Tipo de movimento, Data e Valores
+  -    Regra de negócio: Só poderá fazer movimentações com as contas Ativas.
 - **Relatórios**
   - Consolidado: Movimentação agrupada por conta/cliente
   - Analítica: Movimentação detalhada por conta
