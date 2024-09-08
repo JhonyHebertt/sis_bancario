@@ -5,12 +5,12 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Data.DB, Vcl.StdCtrls, Vcl.Buttons,
-  Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, dmConexao, uCadCliente, uClienteController;
+  Vcl.Grids, Vcl.DBGrids, Vcl.ExtCtrls, dmConexao, uCadCliente, uClienteController, uFuncoes;
 
 type
   TFConsCliente = class(TForm)
     Panel1: TPanel;
-    DBGrid1: TDBGrid;
+    dbgCliente: TDBGrid;
     btnPesquisar: TBitBtn;
     Panel2: TPanel;
     btnNovo: TBitBtn;
@@ -42,7 +42,7 @@ begin
   if dmconexao.dmGeral.qCliente.IsEmpty then
     exit;
 
-  uCadCliente.FCadCliente.EdtID.Text:= DBGrid1.DataSource.DataSet.FieldByName('ID_CLIENTE').AsString;
+  uCadCliente.FCadCliente.EdtID.Text:= dbgCliente.DataSource.DataSet.FieldByName('ID_CLIENTE').AsString;
   uCadCliente.Tipo_Operacao:= 'A';
 
   FCadCliente.ShowModal;
@@ -59,7 +59,7 @@ begin
    oClienteController := TClienteController.Create;
    if MessageDlg('Deseja realmente excluir este registro?',mtConfirmation,[mbYes,mbNo],0) = IDNO then
     Abort;
-   if oClienteController.ExcluirCliente(DBGrid1.DataSource.DataSet.FieldByName('ID_CLIENTE').AsInteger,sErro) = False then
+   if oClienteController.ExcluirCliente(dbgCliente.DataSource.DataSet.FieldByName('ID_CLIENTE').AsInteger,sErro) = False then
      raise Exception.Create(sErro);
 
    FreeAndNil(oClienteController);
@@ -79,12 +79,21 @@ end;
 procedure TFConsCliente.btnPesquisarClick(Sender: TObject);
 var
  oClienteController : TClienteController;
+ oFuncoes : TFuncoes;
  sErro: string;
+ Filtro: string;
 begin
 
     oClienteController := TClienteController.Create;
     try
-       oClienteController.Pesquisar(edtPesquisa.Text);
+       if edtPesquisa.Text <> '' then
+       begin
+        oFuncoes := TFuncoes.Create;
+        edtPesquisa.Text := oFuncoes.RemoveSpecialChars(edtPesquisa.Text);
+        edtPesquisa.Text := oFuncoes.RemoveAccents(edtPesquisa.Text);
+        filtro:= 'where nome like ' + QuotedStr('%' + edtPesquisa.Text + '%');
+       end;
+       oClienteController.Pesquisar(filtro, dmGeral.qCliente, dmGeral.dsCliente, dbgCliente);
     finally
       FreeAndNil(oClienteController);
     end;

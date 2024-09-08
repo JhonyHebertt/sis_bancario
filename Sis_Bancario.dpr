@@ -4,7 +4,6 @@ uses
   Vcl.Forms,
   uPrincipal in 'uPrincipal.pas' {fmPrincipal},
   dmConexao in 'dmConexao.pas' {dmGeral: TDataModule},
-  uClienteModel in 'Model\uClienteModel.pas',
   uClienteController in 'Controller\uClienteController.pas',
   uCadCliente in 'view\uCadCliente.pas' {FCadCliente},
   uConsCliente in 'view\uConsCliente.pas' {FConsCliente},
@@ -22,7 +21,9 @@ uses
   uRelConsolidado in 'view\uRelConsolidado.pas' {fRelConsolidado},
   uFuncoes in 'uFuncoes.pas',
   uConsAnalitico in 'view\uConsAnalitico.pas' {fConsAnalitico},
-  uRelAnalitico in 'view\uRelAnalitico.pas' {fRelAnalitico};
+  uRelAnalitico in 'view\uRelAnalitico.pas' {fRelAnalitico},
+  uGenericModel in 'Model\uGenericModel.pas',
+  uClienteModel in 'Model\uClienteModel.pas';
 
 {$R *.res}
 

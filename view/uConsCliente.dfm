@@ -18,7 +18,7 @@ object FConsCliente: TFConsCliente
     Height = 69
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 759
+    ExplicitWidth = 761
     object Label1: TLabel
       Left = 24
       Top = 10
@@ -72,7 +72,7 @@ object FConsCliente: TFConsCliente
       TabOrder = 1
     end
   end
-  object DBGrid1: TDBGrid
+  object dbgCliente: TDBGrid
     Left = 0
     Top = 69
     Width = 765
@@ -94,8 +94,8 @@ object FConsCliente: TFConsCliente
     Height = 37
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 255
-    ExplicitWidth = 759
+    ExplicitTop = 263
+    ExplicitWidth = 761
     object btnNovo: TBitBtn
       Left = 168
       Top = 6

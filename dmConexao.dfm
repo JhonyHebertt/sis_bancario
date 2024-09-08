@@ -1,24 +1,23 @@
 object dmGeral: TdmGeral
   OnCreate = DataModuleCreate
   OnDestroy = DataModuleDestroy
-  Height = 750
-  Width = 1000
-  PixelsPerInch = 120
+  Height = 600
+  Width = 800
   object FDConnection: TFDConnection
     Params.Strings = (
       
         'Database=C:\Users\heber\Desktop\Projeto Delphi\DB\sis_bancario.d' +
         'b'
       'DriverID=SQLite')
-    Left = 280
-    Top = 33
+    Left = 224
+    Top = 26
   end
   object qCliente: TFDQuery
     Connection = FDConnection
     SQL.Strings = (
       'Select * from cliente')
-    Left = 480
-    Top = 33
+    Left = 384
+    Top = 26
     object qClienteid_cliente: TFDAutoIncField
       FieldName = 'id_cliente'
       Origin = 'id_cliente'
@@ -59,13 +58,13 @@ object dmGeral: TdmGeral
   end
   object dsCliente: TDataSource
     DataSet = qCliente
-    Left = 480
-    Top = 113
+    Left = 384
+    Top = 90
   end
   object dsConta: TDataSource
     DataSet = qConta
-    Left = 584
-    Top = 113
+    Left = 467
+    Top = 90
   end
   object qConta: TFDQuery
     Connection = FDConnection
@@ -73,8 +72,8 @@ object dmGeral: TdmGeral
       
         'Select con.*, cli.nome as nome_cliente from conta as con inner j' +
         'oin cliente as cli on cli.id_cliente = con.id_cliente')
-    Left = 584
-    Top = 40
+    Left = 467
+    Top = 32
     object qContaid_conta: TFDAutoIncField
       FieldName = 'id_conta'
       Origin = 'id_conta'
@@ -120,8 +119,8 @@ object dmGeral: TdmGeral
     Connection = FDConnection
     SQL.Strings = (
       'Select id_cliente, nome from cliente')
-    Left = 488
-    Top = 209
+    Left = 390
+    Top = 167
     object qListCliid_cliente: TFDAutoIncField
       FieldName = 'id_cliente'
       Origin = 'id_cliente'
@@ -138,8 +137,8 @@ object dmGeral: TdmGeral
   end
   object dsListCli: TDataSource
     DataSet = qListCli
-    Left = 488
-    Top = 289
+    Left = 390
+    Top = 231
   end
   object qBancos: TFDQuery
     Connection = FDConnection
@@ -167,18 +166,18 @@ object dmGeral: TdmGeral
       'SELECT '#39'290- Pagseguro'#39' as BANCO'
       'union'
       'SELECT '#39'380- PicPay'#39' as BANCO')
-    Left = 670
-    Top = 40
+    Left = 536
+    Top = 32
   end
   object dsBancos: TDataSource
     DataSet = qBancos
-    Left = 668
-    Top = 113
+    Left = 534
+    Top = 90
   end
   object dsListConta: TDataSource
     DataSet = qListConta
-    Left = 576
-    Top = 289
+    Left = 461
+    Top = 231
   end
   object qListConta: TFDQuery
     Connection = FDConnection
@@ -190,8 +189,8 @@ object dmGeral: TdmGeral
       '  FROM conta as co'
       '  left join cliente as cl on cl.id_cliente = co.id_cliente'
       'Where co.ativa = '#39'S'#39'  ')
-    Left = 576
-    Top = 216
+    Left = 461
+    Top = 173
     object qListContaid_conta: TFDAutoIncField
       FieldName = 'id_conta'
       Origin = 'id_conta'
@@ -227,8 +226,8 @@ object dmGeral: TdmGeral
         'SELECT mv.*, co.conta, ci.nome as nome_cliente FROM movimento as' +
         ' mv left join conta as co on co.id_conta = mv.id_conta left join' +
         ' cliente as ci on ci.id_cliente = co.id_cliente')
-    Left = 768
-    Top = 40
+    Left = 614
+    Top = 32
     object qMovimentoid_movimento: TFDAutoIncField
       FieldName = 'id_movimento'
       Origin = 'id_movimento'
@@ -278,8 +277,8 @@ object dmGeral: TdmGeral
   end
   object dsMovimento: TDataSource
     DataSet = qMovimento
-    Left = 768
-    Top = 113
+    Left = 614
+    Top = 90
   end
   object qRelConsolidado: TFDQuery
     Connection = FDConnection
@@ -314,8 +313,8 @@ object dmGeral: TdmGeral
       'and mv.data  >=  :data'
       'group by ci.nome, co.nome_banco, co.conta'
       '')
-    Left = 768
-    Top = 230
+    Left = 614
+    Top = 184
     ParamData = <
       item
         Name = 'DATA'
@@ -339,8 +338,8 @@ object dmGeral: TdmGeral
   end
   object dsRelConsolidado: TDataSource
     DataSet = qRelConsolidado
-    Left = 768
-    Top = 303
+    Left = 614
+    Top = 242
   end
   object qRelAnalitico: TFDQuery
     Connection = FDConnection
@@ -370,8 +369,8 @@ object dmGeral: TdmGeral
         'onta           '
       'where mv.id_conta = :conta'
       'and mv.data >= :dataB')
-    Left = 878
-    Top = 40
+    Left = 702
+    Top = 32
     ParamData = <
       item
         Name = 'DATAB'
@@ -442,7 +441,7 @@ object dmGeral: TdmGeral
   end
   object dsRelAnalitico: TDataSource
     DataSet = qRelAnalitico
-    Left = 878
-    Top = 113
+    Left = 702
+    Top = 90
   end
 end

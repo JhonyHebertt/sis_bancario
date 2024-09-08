@@ -78,12 +78,12 @@ end;
 
 procedure TFCadCliente.Gravar;
 var
-  oCliente : TCliente;
+  oCliente : TClienteRepositorio;
   oClienteController : TClienteController;
   oFuncoes : TFuncoes;
   sErro: string;
 begin
-  oCliente := TCliente.Create;
+  oCliente := TClienteRepositorio.Create(Nil);
   oClienteController := TClienteController.Create;
   oFuncoes := TFuncoes.Create;
   try
@@ -123,14 +123,14 @@ end;
 
 procedure TFCadCliente.CarregarCliente;
 var
-  oCliente : TCliente;
+  oCliente : TClienteRepositorio;
   oClienteController : TClienteController;
   sErro: string;
 begin
-    oCliente := TCliente.Create;
+    oCliente := TClienteRepositorio.Create(nil);
     oClienteController := TClienteController.Create;
     try
-       oClienteController.CarregarCliente(oCliente, EdtID.Text );
+       oClienteController.CarregarCliente(oCliente, strtoint(EdtID.Text), sErro );
        with oCliente do
        begin
          EdtID       .Text := ID_CLIENTE.ToString;

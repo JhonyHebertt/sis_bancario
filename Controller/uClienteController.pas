@@ -3,38 +3,43 @@ unit uClienteController;
 interface
 
 uses
-uClienteModel, System.SysUtils;
+  uClienteModel, System.SysUtils, Vcl.DBGrids,  FireDAC.Comp.Client, Data.DB;
 
 type
   TClienteController = class
   private
   public
-    procedure Pesquisar(sNome: String);
-    procedure CarregarCliente(oCliente: TCliente; iCodigo: String);
-    function InserirCliente(oCliente: TCliente; sErro: String): Boolean;
+    procedure Pesquisar(AFiltro: String; AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
+    procedure CarregarCliente(oCliente: TClienteRepositorio; iCodigo: Integer; sErro: String);
+    function InserirCliente(oCliente: TClienteRepositorio; sErro: String): Boolean;
     function ExcluirCliente(iCodigo: Integer; sErro: String): Boolean;
-    function AlterarCliente(oCliente: TCliente; sErro: String): Boolean;
+    function AlterarCliente(oCliente: TClienteRepositorio; sErro: String): Boolean;
   end;
 
 implementation
 
-procedure TClienteController.CarregarCliente(oCliente: TCliente; iCodigo: String);
+procedure TClienteController.CarregarCliente(oCliente: TClienteRepositorio; iCodigo: integer; sErro: String);
 var
-  oClientes : TCliente;
+  oClientes : TClienteRepositorio;
 begin
-   oClientes := TCliente.Create;
-   try
-     oClientes.CarregarCliente(oCliente, iCodigo );
-   finally
-     FreeAndNil(oClientes);
-   end;
+   oClientes := TClienteRepositorio.Create(nil);
+   oClientes.CarregarCliente(oClientes, iCodigo, sErro);
+   if sErro = '' then
+    begin
+      oCliente.ID_Cliente      := oClientes.ID_cliente;
+      oCliente.Nome            := oClientes.Nome;
+      oCliente.Data_nascimento := oClientes.Data_nascimento;
+      oCliente.Documento       := oClientes.Documento;
+      oCliente.Telefone        := oClientes.Telefone;
+      oCliente.Email           := oClientes.Email;
+    end;
 end;
 
-function TClienteController.InserirCliente(oCliente: TCliente;sErro: String): Boolean;
+function TClienteController.InserirCliente(oCliente: TClienteRepositorio;sErro: String): Boolean;
 var
-  oClientes : TCliente;
+  oClientes : TClienteRepositorio;
 begin
-   oClientes := TCliente.Create;
+   oClientes := TClienteRepositorio.Create(Nil);
    try
      Result := oclientes.InserirCliente(oCliente, sErro);
    finally
@@ -42,13 +47,13 @@ begin
    end;
 end;
 
-procedure TClienteController.Pesquisar(sNome: String);
+procedure TClienteController.Pesquisar(AFiltro: String; AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
 var
-  oClientes : TCliente;
+  oClientes : TClienteRepositorio;
 begin
-   oClientes := TCliente.Create;
+   oClientes := TClienteRepositorio.Create(Nil);
    try
-     oclientes.Pesquisar(snome);
+     oclientes.PesquisarCliente('cliente', AFiltro, AQuery, ADataSource, ADBGrid);
    finally
      FreeAndNil(oClientes);
    end;
@@ -56,9 +61,9 @@ end;
 
 function TClienteController.ExcluirCliente(iCodigo: Integer;sErro: String): Boolean;
 var
-  oClientes : TCliente;
+  oClientes : TClienteRepositorio;
 begin
-   oClientes := TCliente.Create;
+   oClientes := TClienteRepositorio.Create(nil);
    try
      Result :=  oclientes.ExcluirCliente(iCodigo, sErro);
    finally
@@ -66,11 +71,11 @@ begin
    end;
 end;
 
-function TClienteController.AlterarCliente(oCliente: TCliente;sErro: String): Boolean;
+function TClienteController.AlterarCliente(oCliente: TClienteRepositorio;sErro: String): Boolean;
 var
-  oClientes : TCliente;
+  oClientes : TClienteRepositorio;
 begin
-   oClientes := TCliente.Create;
+   oClientes := TClienteRepositorio.Create(Nil);
    try
      result:= oClientes.AlterarCliente(oCliente, sErro );
    finally

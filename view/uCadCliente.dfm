@@ -2,8 +2,8 @@ object FCadCliente: TFCadCliente
   Left = 0
   Top = 0
   Caption = 'Cadastro de Cliente'
-  ClientHeight = 153
-  ClientWidth = 705
+  ClientHeight = 146
+  ClientWidth = 578
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -15,12 +15,12 @@ object FCadCliente: TFCadCliente
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 705
-    Height = 119
+    Width = 578
+    Height = 112
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 701
-    ExplicitHeight = 118
+    ExplicitWidth = 687
+    ExplicitHeight = 92
     object Label1: TLabel
       Left = 244
       Top = 17
@@ -65,7 +65,7 @@ object FCadCliente: TFCadCliente
       Text = ''
     end
     object edtTel: TLabeledEdit
-      Left = 495
+      Left = 471
       Top = 35
       Width = 98
       Height = 23
@@ -97,19 +97,18 @@ object FCadCliente: TFCadCliente
   end
   object Panel2: TPanel
     Left = 0
-    Top = 119
-    Width = 705
+    Top = 112
+    Width = 578
     Height = 34
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 118
-    ExplicitWidth = 701
+    ExplicitWidth = 582
     DesignSize = (
-      705
+      578
       34)
     object btnSalvar: TBitBtn
-      Left = 426
-      Top = 5
+      Left = 342
+      Top = 6
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -143,11 +142,11 @@ object FCadCliente: TFCadCliente
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       TabOrder = 0
       OnClick = btnSalvarClick
-      ExplicitLeft = 422
+      ExplicitLeft = 350
     end
     object btnSair: TBitBtn
-      Left = 522
-      Top = 5
+      Left = 438
+      Top = 6
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -181,7 +180,7 @@ object FCadCliente: TFCadCliente
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       TabOrder = 1
       OnClick = btnSairClick
-      ExplicitLeft = 518
+      ExplicitLeft = 446
     end
   end
 end
