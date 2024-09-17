@@ -25,7 +25,7 @@ object fCadMovimento: TfCadMovimento
       628
       37)
     object btnSalvar: TBitBtn
-      Left = 287
+      Left = 281
       Top = 4
       Width = 75
       Height = 25
@@ -60,10 +60,10 @@ object fCadMovimento: TfCadMovimento
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       TabOrder = 0
       OnClick = btnSalvarClick
-      ExplicitLeft = 281
+      ExplicitLeft = 275
     end
     object btnSair: TBitBtn
-      Left = 383
+      Left = 377
       Top = 4
       Width = 75
       Height = 25
@@ -98,7 +98,7 @@ object fCadMovimento: TfCadMovimento
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       TabOrder = 1
       OnClick = btnSairClick
-      ExplicitLeft = 377
+      ExplicitLeft = 371
     end
   end
   object Panel1: TPanel

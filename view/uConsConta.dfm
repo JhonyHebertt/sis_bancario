@@ -2,8 +2,8 @@ object fConsConta: TfConsConta
   Left = 0
   Top = 0
   Caption = 'Consulta Conta'
-  ClientHeight = 290
-  ClientWidth = 749
+  ClientHeight = 281
+  ClientWidth = 743
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,11 +14,10 @@ object fConsConta: TfConsConta
   object Panel1: TPanel
     Left = 0
     Top = 0
-    Width = 749
+    Width = 743
     Height = 69
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 745
     object Label1: TLabel
       Left = 26
       Top = 14
@@ -72,11 +71,11 @@ object fConsConta: TfConsConta
       OnClick = btnPesquisarClick
     end
   end
-  object DBGrid1: TDBGrid
+  object dbgConta: TDBGrid
     Left = 0
     Top = 69
-    Width = 749
-    Height = 184
+    Width = 743
+    Height = 175
     Align = alClient
     DataSource = dmGeral.dsConta
     Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTitleClick, dgTitleHotTrack]
@@ -89,13 +88,11 @@ object fConsConta: TfConsConta
   end
   object Panel2: TPanel
     Left = 0
-    Top = 253
-    Width = 749
+    Top = 244
+    Width = 743
     Height = 37
     Align = alBottom
     TabOrder = 2
-    ExplicitTop = 252
-    ExplicitWidth = 745
     object btnNovo: TBitBtn
       Left = 168
       Top = 6

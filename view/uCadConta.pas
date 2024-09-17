@@ -78,10 +78,10 @@ var
   oContaController : TContaController;
   sErro: string;
 begin
-    oConta := TConta.Create;
+    oConta := TConta.Create(Nil);
     oContaController := TContaController.Create;
     try
-       oContaController.CarregarConta(oConta, EdtID.Text );
+       oContaController.CarregarConta(oConta, EdtID.Text, sErro );
        with oConta do
        begin
          EdtID        .Text := ID_Conta  .ToString;
@@ -118,7 +118,7 @@ var
   oContaController : TContaController;
   sErro: string;
 begin
-  oConta := TConta.Create;
+  oConta := TConta.Create(Nil);
   oContaController := TContaController.Create;
   try
     with oConta do
@@ -126,7 +126,10 @@ begin
      id_cliente := strtoint(edtIDCliente.Text);
      nome_banco := dbBancos.Text;
      conta      := EdtConta.Text;
-     ativa      := dbAtivo.ValueChecked;
+     if dbAtivo.Checked then
+      ativa      := dbAtivo.ValueChecked
+     else
+      ativa      := dbAtivo.ValueUnchecked;
      if Tipo_Operacao = 'A' then
       ID_Conta  := strtoint(EdtID.Text);
     end;

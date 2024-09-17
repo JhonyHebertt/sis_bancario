@@ -5,14 +5,14 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Buttons, Vcl.ExtCtrls,
-  Data.DB, Vcl.Grids, Vcl.DBGrids , dmConexao, uContaController, uCadConta;
+  Data.DB, Vcl.Grids, Vcl.DBGrids , dmConexao, uContaController, uCadConta, uFuncoes;
 
 type
   TfConsConta = class(TForm)
     Panel1: TPanel;
     edtPesquisa: TEdit;
     btnPesquisar: TBitBtn;
-    DBGrid1: TDBGrid;
+    dbgConta: TDBGrid;
     Panel2: TPanel;
     btnNovo: TBitBtn;
     btnAlterar: TBitBtn;
@@ -42,7 +42,7 @@ begin
   if dmconexao.dmGeral.qConta.IsEmpty then
     exit;
 
-  uCadConta.FCadConta.EdtID.Text:= DBGrid1.DataSource.DataSet.FieldByName('ID_CONTA').AsString;
+  uCadConta.FCadConta.EdtID.Text:= dbgConta.DataSource.DataSet.FieldByName('ID_CONTA').AsString;
   uCadConta.Tipo_Operacao:= 'A';
 
   FCadConta.ShowModal;
@@ -61,7 +61,7 @@ begin
 
    if MessageDlg('Deseja realmente excluir este registro?',mtConfirmation,[mbYes,mbNo],0) = IDNO then
     Abort;
-   if oContaController.ExcluirConta(DBGrid1.DataSource.DataSet.FieldByName('ID_CONTA').AsInteger,sErro) = False then
+   if oContaController.ExcluirConta(dbgConta.DataSource.DataSet.FieldByName('ID_CONTA').AsInteger,sErro) = False then
      raise Exception.Create(sErro);
 
    FreeAndNil(oContaController);
@@ -81,12 +81,21 @@ end;
 procedure TfConsConta.btnPesquisarClick(Sender: TObject);
 var
  oContaController : TContaController;
+ oFuncoes : TFuncoes;
  sErro: string;
+ Filtro: string;
 begin
 
     oContaController := TContaController.Create;
     try
-       oContaController.Pesquisar(edtPesquisa.Text);
+       if edtPesquisa.Text <> '' then
+       begin
+        oFuncoes := TFuncoes.Create;
+        edtPesquisa.Text := oFuncoes.RemoveSpecialChars(edtPesquisa.Text);
+        edtPesquisa.Text := oFuncoes.RemoveAccents(edtPesquisa.Text);
+        filtro:= 'where nome_cliente like ' + QuotedStr('%' + edtPesquisa.Text + '%');
+       end;
+       oContaController.Pesquisar(filtro, dmGeral.qConta, dmGeral.dsConta, dbgConta);
     finally
       FreeAndNil(oContaController);
     end;

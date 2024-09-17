@@ -118,8 +118,8 @@ object fCadConta: TfCadConta
       591
       37)
     object btnSalvar: TBitBtn
-      Left = 268
-      Top = 4
+      Left = 256
+      Top = 6
       Width = 75
       Height = 25
       Anchors = [akRight, akBottom]
@@ -153,10 +153,9 @@ object fCadConta: TfCadConta
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       TabOrder = 0
       OnClick = btnSalvarClick
-      ExplicitLeft = 262
     end
     object btnSair: TBitBtn
-      Left = 364
+      Left = 352
       Top = 4
       Width = 75
       Height = 25
@@ -191,7 +190,7 @@ object fCadConta: TfCadConta
         00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FFFF00FF}
       TabOrder = 1
       OnClick = btnSairClick
-      ExplicitLeft = 358
+      ExplicitLeft = 346
     end
   end
   object ImageList1: TImageList

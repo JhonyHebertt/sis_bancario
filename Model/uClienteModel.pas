@@ -3,7 +3,8 @@ unit uClienteModel;
 interface
 
 uses
-  uGenericModel, dmconexao, System.SysUtils, FireDAC.Comp.Client, Data.DB, Vcl.DBGrids;
+  uGenericModel, dmconexao, System.SysUtils, FireDAC.Comp.Client, Data.DB, Vcl.DBGrids,
+  uContaModel;
 
 type
   TClienteRepositorio = class(TRepositorio<TClienteRepositorio>)
@@ -25,6 +26,7 @@ type
     function InserirCliente(const ACliente: TClienteRepositorio; out sErro: String): Boolean;
     function AlterarCliente(const ACliente: TClienteRepositorio; out sErro: String): Boolean;
     function ExcluirCliente(const AId: Integer; out sErro: String): Boolean;
+    function ValidaCliente(iCodigo: Integer): Boolean;
     procedure CarregarCliente(oCliente: TClienteRepositorio; iCodigo: Integer; out sErro: String);
     procedure PesquisarCliente(ATableName, AFiltro: String;  AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
   end;
@@ -47,8 +49,14 @@ function TClienteRepositorio.ExcluirCliente(const AId: Integer; out sErro: Strin
 var
   Repositorio: TRepositorio<TClienteRepositorio>;
 begin
-  Repositorio := TRepositorio<TClienteRepositorio>.Create(dmConexao.dmGeral.FDConnection);
-  Repositorio.Excluir('cliente', 'id_cliente', AId, sErro);
+  if ValidaCliente(AId) then
+  begin
+    Repositorio := TRepositorio<TClienteRepositorio>.Create(dmConexao.dmGeral.FDConnection);
+    Repositorio.Excluir('cliente', 'id_cliente', AId, sErro);
+    Result:= True;
+  end
+  else
+    sErro:= 'Cliente possui uma conta!';
 end;
 
 function TClienteRepositorio.AlterarCliente(const ACliente: TClienteRepositorio; out sErro: String): Boolean;
@@ -91,6 +99,30 @@ end;
 procedure TClienteRepositorio.PesquisarCliente(ATableName, AFiltro: String; AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
 begin
     Consultar(ATableName, AFiltro, AQuery, ADataSource, ADBGrid);
+end;
+
+function TClienteRepositorio.ValidaCliente(iCodigo: Integer): Boolean;
+var
+  Repositorio: TRepositorio<TConta>;
+  Campos: TArray<String>;
+  Conta: TConta;
+  id, sErro: String;
+
+begin
+
+  Repositorio := TRepositorio<TConta>.Create(dmConexao.dmGeral.FDConnection);
+  try
+    Campos    := TArray<String>.Create('id_conta');
+    Conta := Repositorio.Carregar('conta', 'id_cliente', iCodigo, Campos, sErro);
+    id:= IntToStr(Conta.id_conta);
+    if id = '' then
+      result:= True
+    else
+      result:= False;
+  except
+      result:= True
+    end;
+
 end;
 
 end.

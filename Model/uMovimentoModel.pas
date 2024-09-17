@@ -5,10 +5,10 @@ interface
 uses
   System.SysUtils, DmConexao, Data.DB, Data.SqlExpr, FireDAC.Stan.Intf, FireDAC.Phys,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.Comp.Client,
-  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef;
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, uGenericModel, Vcl.DBGrids;
 
   type
-  TMovimento = class
+  TMovimento = class(TRepositorio<TMovimento>)
 
   private
     Fid_movimento: Integer;
@@ -28,8 +28,8 @@ uses
     property conta: String read Fconta write Fconta;
     property nome_cliente: String read Fnome_cliente write Fnome_cliente;
 
-    procedure Pesquisar(sCliente: String);
-    procedure CarregarMovimento(oMovimento: TMovimento; iCodigo: String);
+    procedure Pesquisar(ATableName, AFiltro: String; AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
+    procedure CarregarMovimento(oMovimento: TMovimento; iCodigo: String; out sErro: String);
     function InserirMovimento(oMovimento: TMovimento; sErro: String): Boolean;
     function ExcluirMovimento(iCodigo: Integer; sErro: String): Boolean;
     function AlterarMovimento(oMovimento: TMovimento; sErro: String): Boolean;
@@ -41,189 +41,67 @@ implementation
 
 function TMovimento.AlterarMovimento(oMovimento: TMovimento; sErro: String): Boolean;
 var
-  qryAlterar : TFDQuery;
-  tx :  TFDTransaction;
+  Repositorio: TRepositorio<TMovimento>;
+  Campos: TArray<String>;
+  Valores: TArray<Variant>;
 begin
-  try
-    Result := True;
-    qryAlterar := TFDQuery.Create(nil);
-    qryAlterar.Connection:= dmConexao.dmGeral.FDConnection;
-    qryAlterar.SQL.Clear;
-    qryAlterar.SQL.Add('UPDATE movimento SET id_conta = :id_conta,  tp_mov = :tp_mov, data = :data, valor = :valor');
-    qryAlterar.SQL.Add(' WHERE id_movimento = :id_movimento');
-    qryAlterar.ParamByName('id_conta')    .AsInteger :=  oMovimento.id_conta;
-    qryAlterar.ParamByName('tp_mov')      .AsString  :=  oMovimento.tp_mov;
-    qryAlterar.ParamByName('data')        .AsDate    :=  oMovimento.data;
-    qryAlterar.ParamByName('valor')      .AsFloat   :=  oMovimento.valor;
-    qryAlterar.ParamByName('id_movimento').AsInteger :=  oMovimento.id_movimento;
-    tx := TFDTransaction.Create(nil);
-    try
-      tx.Connection := qryAlterar.Connection;
-      tx.StartTransaction; // Iniciar a transação
-      try
-        qryAlterar.ExecSQL; // Executar a query
-        tx.Commit; // Commitar a transação
-        Result := True; // Se chegou até aqui sem exceção, operação foi bem sucedida
-      except
-        on E: Exception do
-        begin
-          sErro := E.Message; // Capturar mensagem de erro
-          tx.Rollback; // Reverter a transação em caso de erro
-        end;
-      end;
-    finally
-      tx.Free; // Liberar a transação
-    end;
-  finally
-    FreeAndNil(qryAlterar)
-  end;
-
-end;
-
-procedure TMovimento.CarregarMovimento(oMovimento: TMovimento; iCodigo: String);
-var
-  qrySelect : TFDQuery;
-  tx :  TFDTransaction;
-begin
-  qrySelect := TFDQuery.Create(nil);
-  qrySelect.Connection:= dmConexao.dmGeral.FDConnection;
-  qrySelect.SQL.Clear;
-  qrySelect.SQL.Add('SELECT mv.*, co.conta, ci.nome as nome_cliente FROM movimento as mv left join conta as co on co.id_conta = mv.id_conta left join cliente as ci on ci.id_cliente = co.id_cliente where id_movimento = :iCodigo');
-  qrySelect.ParamByName('iCodigo').AsString := iCodigo;
-  tx := TFDTransaction.Create(nil);
-    try
-      tx.Connection := qrySelect.Connection;
-      tx.StartTransaction; // Iniciar a transação
-      tx := TFDTransaction.Create(nil);
-      try
-          tx.Connection := qrySelect.Connection;
-          tx.StartTransaction; // Iniciar a transação
-          try
-            qrySelect.Open; // Abrir a consulta SQL
-            if not qrySelect.IsEmpty then
-              begin
-                oMovimento.id_movimento := qrySelect.FieldByName('id_movimento').AsInteger;
-                oMovimento.id_conta     := qrySelect.FieldByName('id_conta').AsInteger;
-                oMovimento.tp_mov       := qrySelect.FieldByName('tp_mov').AsString;
-                oMovimento.data         := strtodate(qrySelect.FieldByName('data').AsString);
-                oMovimento.valor        := qrySelect.FieldByName('valor').AsFloat;
-                oMovimento.conta        := qrySelect.FieldByName('conta').AsString;
-                oMovimento.nome_cliente := qrySelect.FieldByName('nome_cliente').AsString;
-              end;
-              tx.Commit; // Commitar a transação
-            except
-              on E: Exception do
-              begin
-                tx.Rollback; // Reverter a transação em caso de erro
-              end;
-          end;
-        finally
-          tx.Free; // Liberar a transação
-      end;
-    finally
-    end;
-
+  Repositorio := TRepositorio<TMovimento>.Create(dmConexao.dmGeral.FDConnection);
+  Campos := TArray<String>.Create('id_movimento', 'id_conta', 'tp_mov', 'data', 'valor');
+  Valores := TArray<Variant>.Create(INTTOSTR(oMovimento.id_movimento), INTTOSTR(oMovimento.id_conta), oMovimento.tp_mov, oMovimento.data, StringReplace(FLOATTOSTR(oMovimento.valor),',','.', [rfReplaceAll]));
+  Repositorio.Alterar('movimento', 'id_movimento', Campos, Valores, oMovimento.id_movimento, sErro);
 end;
 
 function TMovimento.ExcluirMovimento(iCodigo: Integer; sErro: String): Boolean;
 var
-  qryDelete : TFDQuery;
-  tx :  TFDTransaction;
+  Repositorio: TRepositorio<TMovimento>;
 begin
-   try
-   if dmconexao.dmGeral.qConta.Active then
-    dmconexao.dmGeral.qConta.Active := false;
-    Result := True;
-    qryDelete := TFDQuery.Create(nil);
-    qryDelete.Connection:= dmConexao.dmGeral.FDConnection;
-    qryDelete.SQL.Clear;
-    qryDelete.SQL.Add('DELETE From movimento Where id_movimento = :iCodigo');
-    qryDelete.ParamByName('iCodigo').AsInteger := iCodigo;
-    tx := TFDTransaction.Create(nil);
-    try
-      tx.Connection := qryDelete.Connection;
-      tx.StartTransaction; // Iniciar a transação
-      try
-        qryDelete.ExecSQL; // Executar a query
-        tx.Commit; // Commitar a transação
-        Result := True; // Se chegou até aqui sem exceção, operação foi bem sucedida
-      except
-        on E: Exception do
-        begin
-          sErro := E.Message; // Capturar mensagem de erro
-          tx.Rollback; // Reverter a transação em caso de erro
-        end;
-      end;
-    finally
-      tx.Free; // Liberar a transação
-    end;
-  finally
-    FreeAndNil(qryDelete)
-  end;
-
+  Repositorio := TRepositorio<TMovimento>.Create(dmConexao.dmGeral.FDConnection);
+  Repositorio.Excluir('movimento', 'id_movimento', iCodigo, sErro);
+  if sErro <> '' then
+    result:= False
+  else
+  result:= True;
 end;
 
 function TMovimento.InserirMovimento(oMovimento: TMovimento; sErro: String): Boolean;
 var
-  qryInsert : TFDQuery;
-  tx :  TFDTransaction;
+  Repositorio: TRepositorio<TMovimento>;
+  Campos: TArray<String>;
+  Valores: TArray<Variant>;
 begin
-  try
-    Result := True;
-
-    if dmconexao.dmGeral.qMovimento.Active then
-      dmconexao.dmGeral.qMovimento.Active := false;
-    if dmconexao.dmGeral.qListConta.Active then
-      dmconexao.dmGeral.qListConta.Active:=False;
-
-    qryInsert := TFDQuery.Create(nil);
-    qryInsert.Connection:= dmConexao.dmGeral.FDConnection;
-    qryInsert.SQL.Clear;
-    qryInsert.SQL.Add('INSERT INTO movimento ( id_conta, tp_mov, data, valor )');
-    qryInsert.SQL.Add(' VALUES ( :id_conta, :tp_mov, :data, :valor );');
-    qryInsert.ParamByName('id_conta').AsInteger:= oMovimento.id_conta;
-    qryInsert.ParamByName('tp_mov')  .AsString := oMovimento.tp_mov;
-    qryInsert.ParamByName('data')    .Asdate   := oMovimento.data;
-    qryInsert.ParamByName('valor')   .AsFloat  := oMovimento.valor;
-    tx := TFDTransaction.Create(nil);
-    try
-      tx.Connection := qryInsert.Connection;
-      tx.StartTransaction; // Iniciar a transação
-      try
-        qryInsert.ExecSQL; // Executar a query
-        tx.Commit; // Commitar a transação
-        Result := True; // Se chegou até aqui sem exceção, operação foi bem sucedida
-      except
-        on E: Exception do
-        begin
-          sErro := E.Message; // Capturar mensagem de erro
-          tx.Rollback; // Reverter a transação em caso de erro
-          Result := False;
-        end;
-      end;
-    finally
-      tx.Free; // Liberar a transação
-    end;
-  finally
-    FreeAndNil(qryInsert);
-    if not dmconexao.dmGeral.qMovimento.Active then
-      dmconexao.dmGeral.qMovimento.Active := true;
-  end;
-
+  Repositorio := TRepositorio<TMovimento>.Create(dmConexao.dmGeral.FDConnection);
+  Campos := TArray<String>.Create('id_movimento', 'id_conta', 'tp_mov', 'data', 'valor');
+  Valores := TArray<Variant>.Create(INTTOSTR(oMovimento.id_movimento), INTTOSTR(oMovimento.id_conta), oMovimento.tp_mov, oMovimento.data, StringReplace(FLOATTOSTR(oMovimento.valor),',','.', [rfReplaceAll]));
+  Repositorio.Inserir('movimento', Campos, Valores, sErro);
 end;
 
-procedure TMovimento.Pesquisar(sCliente: String);
+procedure TMovimento.CarregarMovimento(oMovimento: TMovimento; iCodigo: String; out sErro: String);
+var
+  Repositorio: TRepositorio<TMovimento>;
+  Campos: TArray<String>;
+  MovimentoCarregado: TMovimento;
 begin
-  if not dmconexao.dmGeral.qMovimento	.Active then
-    dmconexao.dmGeral.qMovimento.Active := true;
+  Repositorio := TRepositorio<TMovimento>.Create(dmConexao.dmGeral.FDConnection);
+  try
+    Campos := TArray<String>.Create('id_movimento', 'id_conta', 'tp_mov', 'data', 'valor', 'conta', 'nome_cliente');
+    MovimentoCarregado := Repositorio.Carregar('vw_movimento', 'id_movimento', strtoint(iCodigo), Campos, sErro);
+    if sErro = '' then
+    begin
+      oMovimento.fid_movimento := MovimentoCarregado.fid_movimento;
+      oMovimento.fid_conta     := MovimentoCarregado.fid_conta;
+      oMovimento.ftp_mov       := MovimentoCarregado.ftp_mov;
+      oMovimento.fdata         := MovimentoCarregado.fdata;
+      oMovimento.fvalor        := MovimentoCarregado.fvalor;
+      oMovimento.fconta        := MovimentoCarregado.fconta;
+      oMovimento.fnome_cliente := MovimentoCarregado.fnome_cliente;
+    end;
+    finally
+    end;
+end;
 
-    if sCliente	 <> '' then
-      dmconexao.dmGeral.qMovimento.SQL.Text:= 'SELECT mv.*, co.conta, ci.nome as nome_cliente  FROM movimento as mv left join conta as co on co.id_conta = mv.id_conta left join cliente as ci on ci.id_cliente = co.id_cliente where ci.nome like ' + QuotedStr('%' + sCliente + '%') + ' order by 1'
-    else
-      dmconexao.dmGeral.qMovimento.SQL.Text:= 'SELECT mv.*, co.conta, ci.nome as nome_cliente FROM movimento as mv left join conta as co on co.id_conta = mv.id_conta left join cliente as ci on ci.id_cliente = co.id_cliente order by 1';
-
-    dmconexao.dmGeral.qMovimento.Active := false;
-    dmconexao.dmGeral.qMovimento.Open;
+procedure TMovimento.Pesquisar(ATableName, AFiltro: String; AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
+begin
+    Consultar(ATableName, AFiltro, AQuery, ADataSource, ADBGrid);
 end;
 
 end.

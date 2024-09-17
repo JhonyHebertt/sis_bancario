@@ -3,15 +3,13 @@ unit uGenericModel;
 interface
 
 uses
-  System.SysUtils, System.Variants, System.Rtti, System.TypInfo, DmConexao, Data.DB, Data.SqlExpr, FireDAC.Phys.PGDef,
-  FireDAC.Stan.Intf, FireDAC.Phys, FireDAC.Stan.Option,
+  System.SysUtils, System.Variants, System.Rtti, System.TypInfo, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
-  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.VCLUI.Wait, FireDAC.Comp.Client,
-  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs,
-  FireDAC.Phys.SQLiteWrapper.Stat, Data.DbxSqlite, FireDAC.Stan.Param,
-  FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, FireDAC.Comp.DataSet,
-  Datasnap.DBClient, Datasnap.Provider, uFuncoes, System.Generics.Collections,
-  Vcl.DBGrids;
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.SQLite,
+  FireDAC.Phys.SQLiteDef, FireDAC.Stan.ExprFuncs, FireDAC.VCLUI.Wait,
+  FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf, FireDAC.DApt, Data.DB,
+  FireDAC.Comp.DataSet, FireDAC.Comp.Client,  FireDAC.Phys.SQLiteWrapper.Stat,
+  Vcl.DBGrids, DmConexao ;
 
 type
   TRepositorio<T> = class
@@ -135,9 +133,9 @@ begin
 
     for I := 0 to High(ACampos) do
     begin
-      if VarIsType(AValores[I], varDate) then
-        Query.ParamByName(ACampos[I]).AsDate := AValores[I]
-      else if VarIsNumeric(AValores[I]) and TryFloatToDateTime(AValores[I], Data) then
+//      if VarIsType(AValores[I], varDate) then
+//        Query.ParamByName(ACampos[I]).AsDate := AValores[I]
+      if VarIsNumeric(AValores[I]) and TryFloatToDateTime(AValores[I], Data) then
         Query.ParamByName(ACampos[I]).AsDate := Data
       else
         Query.ParamByName(ACampos[I]).Value := AValores[I];
@@ -170,7 +168,6 @@ begin
   try
     Query.Connection := FConnection;
     SQL := 'SELECT ' + String.Join(', ', ACampos) + ' FROM ' + ATabela + ' WHERE ' + AChave + ' = :id';
-//    SQL := 'SELECT * FROM ' + ATabela + ' WHERE ' + AChave + ' = :id';
     Query.SQL.Text := SQL;
     Query.ParamByName('id').AsInteger := AId;
     Query.Open;
@@ -192,9 +189,9 @@ begin
           if Assigned(RttiProperty) then
           begin
             FieldValue := TValue.FromVariant(Query.FieldByName(ACampos[i]).Value);
-            if FieldValue.IsType<TDate> then
-              RttiProperty.SetValue(Instance.AsObject, TValue.From<TDateTime>(FieldValue.AsType<TDate>))
-            else
+//            if FieldValue.IsType<TDate> then
+//              RttiProperty.SetValue(Instance.AsObject, TValue.From<TDate>(FieldValue.AsType<TDate>))
+//            else
               RttiProperty.SetValue(Instance.AsObject, FieldValue);
           end;
         end;

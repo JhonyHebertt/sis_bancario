@@ -83,10 +83,10 @@ var
   oMovimentoController : TMovimentoController;
   sErro: string;
 begin
-    oMovimento := TMovimento.Create;
+    oMovimento := TMovimento.Create(Nil);
     oMovimentoController := TMovimentoController.Create;
     try
-       oMovimentoController.CarregarMovimento(oMovimento, EdtID.Text );
+       oMovimentoController.CarregarMovimento(oMovimento, EdtID.Text, sErro );
        with oMovimento do
        begin
          EdtID     .Text   := ID_Movimento  .ToString;
@@ -127,7 +127,7 @@ var
   oMovimentoController : TMovimentoController;
   sErro: string;
 begin
-  oMovimento := TMovimento.Create;
+  oMovimento := TMovimento.Create(Nil);
   oMovimentoController := TMovimentoController.Create;
   try
     with oMovimento do

@@ -11,9 +11,9 @@ type
   public
     procedure Pesquisar(AFiltro: String; AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
     procedure CarregarCliente(oCliente: TClienteRepositorio; iCodigo: Integer; sErro: String);
-    function InserirCliente(oCliente: TClienteRepositorio; sErro: String): Boolean;
-    function ExcluirCliente(iCodigo: Integer; sErro: String): Boolean;
-    function AlterarCliente(oCliente: TClienteRepositorio; sErro: String): Boolean;
+    function InserirCliente(oCliente: TClienteRepositorio; out  sErro: String): Boolean;
+    function ExcluirCliente(iCodigo: Integer; out  sErro: String): Boolean;
+    function AlterarCliente(oCliente: TClienteRepositorio; out  sErro: String): Boolean;
   end;
 
 implementation
@@ -35,7 +35,7 @@ begin
     end;
 end;
 
-function TClienteController.InserirCliente(oCliente: TClienteRepositorio;sErro: String): Boolean;
+function TClienteController.InserirCliente(oCliente: TClienteRepositorio; out sErro: String): Boolean;
 var
   oClientes : TClienteRepositorio;
 begin
@@ -59,7 +59,7 @@ begin
    end;
 end;
 
-function TClienteController.ExcluirCliente(iCodigo: Integer;sErro: String): Boolean;
+function TClienteController.ExcluirCliente(iCodigo: Integer; out sErro: String): Boolean;
 var
   oClientes : TClienteRepositorio;
 begin
@@ -71,7 +71,7 @@ begin
    end;
 end;
 
-function TClienteController.AlterarCliente(oCliente: TClienteRepositorio;sErro: String): Boolean;
+function TClienteController.AlterarCliente(oCliente: TClienteRepositorio; out sErro: String): Boolean;
 var
   oClientes : TClienteRepositorio;
 begin

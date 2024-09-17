@@ -18,7 +18,7 @@ object fConsMov: TfConsMov
     Height = 69
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 926
+    ExplicitWidth = 924
     object Label2: TLabel
       Left = 11
       Top = 6
@@ -79,8 +79,8 @@ object fConsMov: TfConsMov
     Height = 37
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 288
-    ExplicitWidth = 926
+    ExplicitTop = 280
+    ExplicitWidth = 924
     object btnNovo: TBitBtn
       Left = 168
       Top = 6
@@ -226,7 +226,7 @@ object fConsMov: TfConsMov
       OnClick = btnSairClick
     end
   end
-  object DBGrid1: TDBGrid
+  object dbgMovi: TDBGrid
     Left = 0
     Top = 69
     Width = 930

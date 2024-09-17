@@ -5,11 +5,11 @@ interface
 uses
   System.SysUtils, DmConexao, Data.DB, Data.SqlExpr, FireDAC.Stan.Intf, FireDAC.Phys,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.Comp.Client,
-  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef;
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, uGenericModel, Vcl.DBGrids, uMovimentoModel;
 
 
 type
-  TConta = class
+  TConta = class(TRepositorio<TConta>)
 
   private
     Fid_conta: Integer;
@@ -27,11 +27,11 @@ type
     property ativa: String read fativa write fativa;
     property Nome_cliente: String read FNome_cliente write FNome_Cliente;
 
-    procedure Pesquisar(sPesquisa: String);
-    procedure CarregarConta(oConta: TConta; iCodigo: String);
-    function InserirConta(oConta: TConta; sErro: String): Boolean;
-    function ExcluirConta(iCodigo: Integer; sErro: String): Boolean;
-    function AlterarConta(oConta: TConta; sErro: String): Boolean;
+    procedure Pesquisar(ATableName, AFiltro: String;  AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
+    procedure CarregarConta(oConta: TConta; iCodigo: String; out sErro: String);
+    function InserirConta(oConta: TConta; out  sErro: String): Boolean;
+    function ExcluirConta(iCodigo: Integer; out  sErro: String): Boolean;
+    function AlterarConta(oConta: TConta; out  sErro: String): Boolean;
     function ValidaConta(iCodigo: Integer): Boolean;
   end;
 
@@ -39,232 +39,98 @@ implementation
 
 { TConta }
 
-function TConta.AlterarConta(oConta: TConta; sErro: String): Boolean;
+function TConta.AlterarConta(oConta: TConta; out  sErro: String): Boolean;
 var
-  qryAlterar : TFDQuery;
-  tx :  TFDTransaction;
+  Repositorio: TRepositorio<TConta>;
+  Campos: TArray<String>;
+  Valores: TArray<Variant>;
 begin
-  try
-    Result := True;
-    qryAlterar := TFDQuery.Create(nil);
-    qryAlterar.Connection:= dmConexao.dmGeral.FDConnection;
-    qryAlterar.SQL.Clear;
-    qryAlterar.SQL.Add('UPDATE conta SET id_cliente = :id_cliente, nome_banco = :nome_banco, conta = :conta, ativa = :ativa');
-    qryAlterar.SQL.Add(' WHERE id_conta = :id_conta');
-    qryAlterar.ParamByName('id_cliente').AsInteger :=  oConta.id_cliente;
-    qryAlterar.ParamByName('nome_banco').AsString  :=  oConta.nome_banco;
-    qryAlterar.ParamByName('conta')     .AsString  :=  oConta.conta;
-    qryAlterar.ParamByName('ativa')     .AsString  :=  oConta.ativa;
-    qryAlterar.ParamByName('id_conta')  .AsInteger :=  oConta.id_conta;
-    tx := TFDTransaction.Create(nil);
-    try
-      tx.Connection := qryAlterar.Connection;
-      tx.StartTransaction; // Iniciar a transação
-      try
-        qryAlterar.ExecSQL; // Executar a query
-        tx.Commit; // Commitar a transação
-        Result := True; // Se chegou até aqui sem exceção, operação foi bem sucedida
-      except
-        on E: Exception do
-        begin
-          sErro := E.Message; // Capturar mensagem de erro
-          tx.Rollback; // Reverter a transação em caso de erro
-        end;
-      end;
-    finally
-      tx.Free; // Liberar a transação
-    end;
-  finally
-    FreeAndNil(qryAlterar)
-  end;
-
+  Repositorio := TRepositorio<TConta>.Create(dmConexao.dmGeral.FDConnection);
+  Campos := TArray<String>.Create('id_cliente', 'nome_banco', 'conta', 'ativa');
+  Valores := TArray<Variant>.Create(INTTOSTR(oConta.id_cliente), oConta.nome_banco, oConta.conta, oConta.ativa	);
+  Repositorio.Alterar('conta', 'id_conta', Campos, Valores, oConta.id_conta, sErro);
 end;
 
-procedure TConta.CarregarConta(oConta: TConta; iCodigo: String);
+function TConta.ExcluirConta(iCodigo: Integer; out  sErro: String): Boolean;
 var
-  qrySelect : TFDQuery;
-  tx :  TFDTransaction;
-begin
-  qrySelect := TFDQuery.Create(nil);
-  qrySelect.Connection:= dmConexao.dmGeral.FDConnection;
-  qrySelect.SQL.Clear;
-  qrySelect.SQL.Add('Select con.*, cli.nome as nome_cliente from conta as con inner join cliente as cli on cli.id_cliente = con.id_cliente where id_conta = :iCodigo');
-  qrySelect.ParamByName('iCodigo').AsString := iCodigo;
-  tx := TFDTransaction.Create(nil);
-    try
-      tx.Connection := qrySelect.Connection;
-      tx.StartTransaction; // Iniciar a transação
-      tx := TFDTransaction.Create(nil);
-      try
-          tx.Connection := qrySelect.Connection;
-          tx.StartTransaction; // Iniciar a transação
-          try
-            qrySelect.Open; // Abrir a consulta SQL
-            if not qrySelect.IsEmpty then
-              begin
-                oConta.id_conta     := qrySelect.FieldByName('id_conta').AsInteger;
-                oConta.id_cliente   := qrySelect.FieldByName('id_cliente').AsInteger;
-                oConta.Nome_banco   := qrySelect.FieldByName('Nome_banco').AsString;
-                oConta.Nome_cliente := qrySelect.FieldByName('Nome_cliente').AsString;
-                oConta.conta        := qrySelect.FieldByName('conta').AsString;
-                oConta.ativa        := qrySelect.FieldByName('ativa').AsString;
-              end;
-              tx.Commit; // Commitar a transação
-            except
-              on E: Exception do
-              begin
-                tx.Rollback; // Reverter a transação em caso de erro
-              end;
-          end;
-        finally
-          tx.Free; // Liberar a transação
-      end;
-    finally
-    end;
-
-end;
-
-function TConta.ExcluirConta(iCodigo: Integer; sErro: String): Boolean;
-var
-  qryDelete : TFDQuery;
-  tx :  TFDTransaction;
+  Repositorio: TRepositorio<TConta>;
 begin
   if ValidaConta(iCodigo) then
   begin
-     try
-        if dmconexao.dmGeral.qConta.Active then
-          dmconexao.dmGeral.qConta.Active := false;
-
-        Result := True;
-        qryDelete := TFDQuery.Create(nil);
-        qryDelete.Connection:= dmConexao.dmGeral.FDConnection;
-        qryDelete.SQL.Clear;
-        qryDelete.SQL.Add('DELETE From conta Where id_conta = :iCodigo');
-        qryDelete.ParamByName('iCodigo').AsInteger := iCodigo;
-        tx := TFDTransaction.Create(nil);
-        try
-          tx.Connection := qryDelete.Connection;
-          tx.StartTransaction; // Iniciar a transação
-          try
-            qryDelete.ExecSQL; // Executar a query
-            tx.Commit; // Commitar a transação
-            Result := True; // Se chegou até aqui sem exceção, operação foi bem sucedida
-          except
-            on E: Exception do
-            begin
-              sErro := E.Message; // Capturar mensagem de erro
-              tx.Rollback; // Reverter a transação em caso de erro
-            end;
-          end;
-        finally
-          tx.Free; // Liberar a transação
-        end;
-    finally
-      FreeAndNil(qryDelete)
-    end;
+    Repositorio := TRepositorio<TConta>.Create(dmConexao.dmGeral.FDConnection);
+    Repositorio.Excluir('conta', 'id_conta', iCodigo, sErro);
+    Result:= True;
   end
   else
-    sErro := 'Conta possui movimentação';
-
+  sErro:= 'Conta já tem Movimento!!!';
 end;
 
-function TConta.InserirConta(oConta: TConta; sErro: String): Boolean;
-  var
-  qryInsert : TFDQuery;
-  tx :  TFDTransaction;
+function TConta.InserirConta(oConta: TConta; out  sErro: String): Boolean;
+var
+  Repositorio: TRepositorio<TConta>;
+  Campos: TArray<String>;
+  Valores: TArray<Variant>;
 begin
+  Repositorio := TRepositorio<TConta>.Create(dmConexao.dmGeral.FDConnection);
+  Campos := TArray<String>.Create('id_cliente', 'nome_banco', 'conta', 'ativa');
+  Valores := TArray<Variant>.Create(INTTOSTR(oConta.id_cliente), oConta.nome_banco, oConta.conta, oConta.ativa	);
+  Repositorio.Inserir('conta', Campos, Valores, sErro);
+end;
+
+procedure TConta.CarregarConta(oConta: TConta; iCodigo: String; out sErro: String);
+var
+  Repositorio: TRepositorio<TConta>;
+  Campos: TArray<String>;
+  ContaCarregada: TConta;
+begin
+  Repositorio := TRepositorio<TConta>.Create(dmConexao.dmGeral.FDConnection);
   try
-    Result := True;
-
-    if dmconexao.dmGeral.qConta.Active then
-      dmconexao.dmGeral.qConta.Active := false;
-    qryInsert := TFDQuery.Create(nil);
-    qryInsert.Connection:= dmConexao.dmGeral.FDConnection;
-    qryInsert.SQL.Clear;
-    qryInsert.SQL.Add('INSERT INTO conta ( id_cliente, nome_banco, conta, ativa )');
-    qryInsert.SQL.Add(' VALUES ( :id_cliente, :nome_banco, :conta, :ativa );');
-    qryInsert.ParamByName('id_cliente').AsInteger := oConta.id_cliente;
-    qryInsert.ParamByName('nome_banco').AsString := oConta.nome_banco;
-    qryInsert.ParamByName('conta')     .AsString := oConta.conta;
-    qryInsert.ParamByName('ativa')     .AsString := oConta.ativa;
-    tx := TFDTransaction.Create(nil);
-    try
-      tx.Connection := qryInsert.Connection;
-      tx.StartTransaction; // Iniciar a transação
-      try
-        qryInsert.ExecSQL; // Executar a query
-        tx.Commit; // Commitar a transação
-        Result := True; // Se chegou até aqui sem exceção, operação foi bem sucedida
-      except
-        on E: Exception do
-        begin
-          sErro := E.Message; // Capturar mensagem de erro
-          tx.Rollback; // Reverter a transação em caso de erro
-          Result := False;
-        end;
-      end;
-    finally
-      tx.Free; // Liberar a transação
+    Campos := TArray<String>.Create('id_conta', 'id_cliente', 'Nome_banco', 'conta', 'ativa', 'nome_cliente');
+    ContaCarregada := Repositorio.Carregar('vw_conta', 'id_conta', strtoint(iCodigo), Campos, sErro);
+    if sErro = '' then
+    begin
+      oConta.fid_conta     := ContaCarregada.fid_conta;
+      oConta.fid_cliente   := ContaCarregada.fid_cliente;
+      oConta.fNome_banco   := ContaCarregada.fNome_banco;
+      oConta.fconta        := ContaCarregada.fconta;
+      oConta.fativa        := ContaCarregada.fativa;
+      oConta.fNome_cliente := ContaCarregada.Nome_cliente;
     end;
-  finally
-    FreeAndNil(qryInsert);
-    if not dmconexao.dmGeral.qConta.Active then
-      dmconexao.dmGeral.qConta.Active := true;
-  end;
+
+    finally
+    end;
 
 end;
 
-procedure TConta.Pesquisar(sPesquisa: String);
+procedure TConta.Pesquisar(ATableName, AFiltro: String; AQuery: TFDQuery; ADataSource: TDataSource; ADBGrid: TDBGrid);
 begin
-    if not dmconexao.dmGeral.qConta.Active then
-      dmconexao.dmGeral.qConta.Active := true;
-
-    if sPesquisa	 <> '' then
-      dmconexao.dmGeral.qConta.SQL.Text:= 'Select con.*, cli.nome as nome_cliente from conta as con inner join cliente as cli on cli.id_cliente = con.id_cliente where cli.nome like ' + QuotedStr('%' + sPesquisa + '%') + ' order by 1'
-    else
-      dmconexao.dmGeral.qConta.SQL.Text:= 'Select con.*, cli.nome as nome_cliente from conta as con inner join cliente as cli on cli.id_cliente = con.id_cliente order by 1';
-
-    dmconexao.dmGeral.qConta.Active := false;
-    dmconexao.dmGeral.qConta.Open;
+    Consultar(ATableName, AFiltro, AQuery, ADataSource, ADBGrid);
 end;
 
 function TConta.ValidaConta(iCodigo: Integer): Boolean;
 var
-  qrySelect : TFDQuery;
-  tx :  TFDTransaction;
-begin
-  qrySelect := TFDQuery.Create(nil);
-  qrySelect.Connection:= dmConexao.dmGeral.FDConnection;
-  qrySelect.SQL.Clear;
-  qrySelect.SQL.Add('Select * from movimento as mov where id_conta = :iCodigo');
-  qrySelect.ParamByName('iCodigo').AsString := inttostr(iCodigo);
-  tx := TFDTransaction.Create(nil);
-    try
-      tx.Connection := qrySelect.Connection;
-      tx.StartTransaction; // Iniciar a transação
-      tx := TFDTransaction.Create(nil);
-      try
-          tx.Connection := qrySelect.Connection;
-          tx.StartTransaction; // Iniciar a transação
-          try
-            qrySelect.Open; // Abrir a consulta SQL
-            if not qrySelect.IsEmpty then
-              result:= False
-            else
-               result:= True;
+  Repositorio: TRepositorio<TMovimento>;
+  Campos: TArray<String>;
+  Movimento: TMovimento;
+  id, sErro: String;
 
-              tx.Commit; // Commitar a transação
-            except
-              on E: Exception do
-              begin
-                tx.Rollback; // Reverter a transação em caso de erro
-              end;
-          end;
-        finally
-          tx.Free; // Liberar a transação
-      end;
-    finally
-    end;
+begin
+
+  Repositorio := TRepositorio<TMovimento>.Create(dmConexao.dmGeral.FDConnection);
+  try
+    Campos    := TArray<String>.Create('id_movimento');
+    Movimento := Repositorio.Carregar('movimento', 'id_conta', iCodigo, Campos, sErro);
+
+    id:= IntToStr(Movimento.id_movimento);
+    if id = '' then
+      result:= True
+    else
+      result:= False;  
+    
+  except
+    result:= True;
+           
+  end;
 
 end;
 
