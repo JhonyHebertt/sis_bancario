@@ -3,7 +3,7 @@
   Top = 0
   Align = alClient
   Caption = 'Sistema Banc'#225'rio'
-  ClientHeight = 540
+  ClientHeight = 545
   ClientWidth = 1036
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET

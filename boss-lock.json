@@ -9,6 +9,14 @@
 			"artifacts": {},
 			"failed": false,
 			"changed": false
+		},
+		"https://github.com/vsofttechnologies/dunitx": {
+			"name": "dunitx",
+			"version": "v0.3.5",
+			"hash": "ab813905f2d11a4b1a6e9938e97269ac",
+			"artifacts": {},
+			"failed": false,
+			"changed": false
 		}
 	}
 }

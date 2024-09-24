@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{39252E51-A850-43DF-85DF-ADEB4AC3A11E}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="Sis_Bancario.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Test\Sis_BancarioTests.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="Sis_Bancario">
+        <MSBuild Projects="Sis_Bancario.dproj"/>
+    </Target>
+    <Target Name="Sis_Bancario:Clean">
+        <MSBuild Projects="Sis_Bancario.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Sis_Bancario:Make">
+        <MSBuild Projects="Sis_Bancario.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Sis_BancarioTests">
+        <MSBuild Projects="Test\Sis_BancarioTests.dproj"/>
+    </Target>
+    <Target Name="Sis_BancarioTests:Clean">
+        <MSBuild Projects="Test\Sis_BancarioTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Sis_BancarioTests:Make">
+        <MSBuild Projects="Test\Sis_BancarioTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="Sis_Bancario;Sis_BancarioTests"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="Sis_Bancario:Clean;Sis_BancarioTests:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="Sis_Bancario:Make;Sis_BancarioTests:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

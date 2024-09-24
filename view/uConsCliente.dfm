@@ -79,13 +79,14 @@ object FConsCliente: TFConsCliente
     Height = 195
     Align = alClient
     DataSource = dmGeral.dsCliente
-    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTitleClick, dgTitleHotTrack]
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgTitleClick, dgTitleHotTrack]
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnDblClick = dbgClienteDblClick
   end
   object Panel2: TPanel
     Left = 0

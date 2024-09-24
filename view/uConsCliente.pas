@@ -24,6 +24,7 @@ type
     procedure btnNovoClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
+    procedure dbgClienteDblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -104,6 +105,11 @@ begin
   dmconexao.dmGeral.qCliente.Close;
   edtPesquisa.Clear;
   Close;
+end;
+
+procedure TFConsCliente.dbgClienteDblClick(Sender: TObject);
+begin
+btnAlterarClick(Nil);
 end;
 
 end.

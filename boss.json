@@ -6,6 +6,7 @@
 	"mainsrc": "./src",
 	"projects": [],
 	"dependencies": {
-		"https://github.com/fortesinformatica/fortesreport-ce": ">0.0.0"
+		"https://github.com/fortesinformatica/fortesreport-ce": ">0.0.0",
+		"https://github.com/vsofttechnologies/dunitx": "^v0.3.5"
 	}
 }

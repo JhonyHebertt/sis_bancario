@@ -24,6 +24,7 @@ type
     procedure btnPesquisarClick(Sender: TObject);
     procedure btnAlterarClick(Sender: TObject);
     procedure btnExcluirClick(Sender: TObject);
+    procedure dbgMoviDblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -108,6 +109,11 @@ begin
   dmconexao.dmGeral.qMovimento.Close;
   edtCliente.Clear;
   Close;
+end;
+
+procedure TfConsMov.dbgMoviDblClick(Sender: TObject);
+begin
+btnAlterarClick(Nil);
 end;
 
 end.

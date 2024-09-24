@@ -18,6 +18,7 @@ object fConsConta: TfConsConta
     Height = 69
     Align = alTop
     TabOrder = 0
+    ExplicitWidth = 739
     object Label1: TLabel
       Left = 26
       Top = 14
@@ -78,13 +79,14 @@ object fConsConta: TfConsConta
     Height = 175
     Align = alClient
     DataSource = dmGeral.dsConta
-    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTitleClick, dgTitleHotTrack]
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgTitleClick, dgTitleHotTrack]
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnDblClick = dbgContaDblClick
   end
   object Panel2: TPanel
     Left = 0
@@ -93,6 +95,8 @@ object fConsConta: TfConsConta
     Height = 37
     Align = alBottom
     TabOrder = 2
+    ExplicitTop = 243
+    ExplicitWidth = 739
     object btnNovo: TBitBtn
       Left = 168
       Top = 6

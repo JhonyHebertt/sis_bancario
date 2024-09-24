@@ -18,7 +18,7 @@ object fConsMov: TfConsMov
     Height = 69
     Align = alTop
     TabOrder = 0
-    ExplicitWidth = 924
+    ExplicitWidth = 926
     object Label2: TLabel
       Left = 11
       Top = 6
@@ -79,8 +79,8 @@ object fConsMov: TfConsMov
     Height = 37
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 280
-    ExplicitWidth = 924
+    ExplicitTop = 288
+    ExplicitWidth = 926
     object btnNovo: TBitBtn
       Left = 168
       Top = 6
@@ -233,12 +233,13 @@ object fConsMov: TfConsMov
     Height = 220
     Align = alClient
     DataSource = dmGeral.dsMovimento
-    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTitleClick, dgTitleHotTrack]
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgTitleClick, dgTitleHotTrack]
     TabOrder = 2
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnDblClick = dbgMoviDblClick
   end
 end

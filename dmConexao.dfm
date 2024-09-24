@@ -6,8 +6,8 @@ object dmGeral: TdmGeral
   object FDConnection: TFDConnection
     Params.Strings = (
       
-        'Database=C:\Users\heber\Desktop\Projeto Delphi\DB\sis_bancario.d' +
-        'b'
+        'Database=D:\Documents\Embarcadero\Studio\sis_bancario\bd\sis_ban' +
+        'cario.db'
       'DriverID=SQLite')
     Left = 224
     Top = 26

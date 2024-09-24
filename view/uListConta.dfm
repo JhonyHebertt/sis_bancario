@@ -10,6 +10,7 @@ object fListConta: TfListConta
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  Position = poScreenCenter
   TextHeight = 15
   object Panel2: TPanel
     Left = 0
@@ -18,8 +19,8 @@ object fListConta: TfListConta
     Height = 37
     Align = alBottom
     TabOrder = 0
-    ExplicitTop = 342
-    ExplicitWidth = 889
+    ExplicitTop = 350
+    ExplicitWidth = 891
     object btnSelecionar: TBitBtn
       Left = 21
       Top = 6
@@ -100,12 +101,13 @@ object fListConta: TfListConta
     Height = 351
     Align = alClient
     DataSource = dmGeral.dsListConta
-    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTitleClick, dgTitleHotTrack]
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgTitleClick, dgTitleHotTrack]
     TabOrder = 1
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnDblClick = DBGrid1DblClick
   end
 end

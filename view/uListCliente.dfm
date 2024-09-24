@@ -10,6 +10,7 @@ object fListCliente: TfListCliente
   Font.Height = -12
   Font.Name = 'Segoe UI'
   Font.Style = []
+  Position = poScreenCenter
   TextHeight = 15
   object DBGrid1: TDBGrid
     Left = 0
@@ -18,13 +19,14 @@ object fListCliente: TfListCliente
     Height = 531
     Align = alClient
     DataSource = dmGeral.dsListCli
-    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgTitleClick, dgTitleHotTrack]
+    Options = [dgTitles, dgColumnResize, dgColLines, dgRowLines, dgRowSelect, dgTitleClick, dgTitleHotTrack]
     TabOrder = 0
     TitleFont.Charset = DEFAULT_CHARSET
     TitleFont.Color = clWindowText
     TitleFont.Height = -12
     TitleFont.Name = 'Segoe UI'
     TitleFont.Style = []
+    OnDblClick = DBGrid1DblClick
   end
   object Panel2: TPanel
     Left = 0
@@ -33,8 +35,8 @@ object fListCliente: TfListCliente
     Height = 37
     Align = alBottom
     TabOrder = 1
-    ExplicitTop = 522
-    ExplicitWidth = 388
+    ExplicitTop = 530
+    ExplicitWidth = 390
     object btnSelecionar: TBitBtn
       Left = 21
       Top = 6

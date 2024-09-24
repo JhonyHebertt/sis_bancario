@@ -15,6 +15,7 @@ type
     DBGrid1: TDBGrid;
     procedure btnSairClick(Sender: TObject);
     procedure btnSelecionarClick(Sender: TObject);
+    procedure DBGrid1DblClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -43,6 +44,11 @@ begin
   EdtCliente:= DBGrid1.DataSource.DataSet.FieldByName('NOME')    .AsString;
 
   close;
+end;
+
+procedure TfListConta.DBGrid1DblClick(Sender: TObject);
+begin
+  btnSelecionarClick(Nil);
 end;
 
 end.
