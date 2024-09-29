@@ -121,8 +121,7 @@ begin
     Campos    := TArray<String>.Create('id_movimento');
     Movimento := Repositorio.Carregar('movimento', 'id_conta', iCodigo, Campos, sErro);
 
-    id:= IntToStr(Movimento.id_movimento);
-    if id = '' then
+    if Movimento = Nil then
       result:= True
     else
       result:= False;  

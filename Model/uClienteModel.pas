@@ -114,8 +114,7 @@ begin
   try
     Campos    := TArray<String>.Create('id_conta');
     Conta := Repositorio.Carregar('conta', 'id_cliente', iCodigo, Campos, sErro);
-    id:= IntToStr(Conta.id_conta);
-    if id = '' then
+    if Conta = Nil then
       result:= True
     else
       result:= False;

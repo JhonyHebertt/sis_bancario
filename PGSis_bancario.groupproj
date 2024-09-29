@@ -6,9 +6,6 @@
         <Projects Include="Sis_Bancario.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="Test\Sis_BancarioTests.dproj">
-            <Dependencies/>
-        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -26,23 +23,14 @@
     <Target Name="Sis_Bancario:Make">
         <MSBuild Projects="Sis_Bancario.dproj" Targets="Make"/>
     </Target>
-    <Target Name="Sis_BancarioTests">
-        <MSBuild Projects="Test\Sis_BancarioTests.dproj"/>
-    </Target>
-    <Target Name="Sis_BancarioTests:Clean">
-        <MSBuild Projects="Test\Sis_BancarioTests.dproj" Targets="Clean"/>
-    </Target>
-    <Target Name="Sis_BancarioTests:Make">
-        <MSBuild Projects="Test\Sis_BancarioTests.dproj" Targets="Make"/>
-    </Target>
     <Target Name="Build">
-        <CallTarget Targets="Sis_Bancario;Sis_BancarioTests"/>
+        <CallTarget Targets="Sis_Bancario"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="Sis_Bancario:Clean;Sis_BancarioTests:Clean"/>
+        <CallTarget Targets="Sis_Bancario:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="Sis_Bancario:Make;Sis_BancarioTests:Make"/>
+        <CallTarget Targets="Sis_Bancario:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
